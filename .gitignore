@@ -1,0 +1,51 @@
+# Cmake generated files
+CMakeFiles/
+CMakeCache.txt
+CMakeScripts/
+CMakeScripts/
+CMakeDoxyfile.in
+CMakeDoxygenDefaults.cmake
+CMakeTmp/
+CTestTestfile.cmake
+cmake_install.cmake
+install_manifest.txt
+Makefile
+CPackConfig.cmake
+CPackSourceConfig.cmake
+
+# VS Code generated files
+.vscode/
+.idea/
+*.suo
+*.user
+*.user.state
+*.sdf
+*.sln.docstates
+*.suo
+*.userprefs
+
+# Output files
+bin/
+build/
+out/
+Debug/
+Release/
+
+# Text editor files
+*~
+*.swp
+*.swo
+*.swm
+*.bak
+Thumbs.db
+.DS_Store
+
+# Save files
+*.bak
+
+# Cmake user presets
+CMakeUserPresets.json
+CMakePresets.json
+
+# Logs
+errors.log

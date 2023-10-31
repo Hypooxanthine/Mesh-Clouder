@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(MeshClouder)
+
+set(CMAKE_CXX_COMPILER g++)
+set(CMAKE_CXX_FLAGS "-std=c++23 -Wall")
+
+set(SOURCE_DIR src)
+set(INCLUDE_DIR include)
+
+set(SOURCES
+    src/main.cpp
+)
+
+set(INCLUDES
+    
+)
+
+add_executable(meshclouder ${SOURCES})
+
+target_include_directories(meshclouder PUBLIC ${INCLUDE_DIR})
