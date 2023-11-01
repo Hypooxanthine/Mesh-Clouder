@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.10)
 
 project(MeshClouder)
 
+if (POLICY CMP0072)
+    cmake_policy (SET CMP0072 NEW)
+endif(POLICY CMP0072)
 find_package(OpenGL REQUIRED)
 
 set(CMAKE_CXX_COMPILER g++)
@@ -14,14 +17,25 @@ set(INCLUDE_DIR include)
 # Dependencies include directories
 set(OBJLOADER_INCLUDE_DIR dependencies/OBJ_Loader/include)
 set(HAPPLY_INCLUDE_DIR dependencies/happly/include)
-set(GLFW_INCLUDE_DIR dependencies/GLFW/include)
 set(GLEW_INCLUDE_DIR dependencies/GLEW/include)
 set(GLM_INCLUDE_DIR dependencies/GLM/include)
 set(IMGUI_INCLUDE_DIR dependencies/ImGui/include)
+if(WIN32)
+    set(GLFW_INCLUDE_DIR dependencies/GLFW/include)
+elseif(UNIX)
+    set(GLFW_INCLUDE_DIR )
+endif(WIN32)
 
 # Dependencies lib directories
-set(GLFW_LIBRARY ${CMAKE_SOURCE_DIR}/dependencies/GLFW/lib-mingw-w64/libglfw3.a)
-set(GLEW_LIBRARY ${CMAKE_SOURCE_DIR}/dependencies/GLEW/lib/Release/x64/glew32s.lib)
+if(WIN32)
+    set(GLFW_LIBRARY ${CMAKE_SOURCE_DIR}/dependencies/GLFW/lib-mingw-w64/libglfw3.a)
+    set(GLEW_LIBRARY ${CMAKE_SOURCE_DIR}/dependencies/GLEW/lib/Release/x64/glew32s.lib)
+endif(WIN32)
+
+if(UNIX)
+    set(GLFW_LIBRARY glfw3 X11)
+    set(GLEW_LIBRARY GLEW)
+endif(UNIX)
 
 # Implementations
 set(IMGUI_IMPL
