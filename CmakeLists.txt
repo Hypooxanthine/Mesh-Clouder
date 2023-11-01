@@ -2,20 +2,67 @@ cmake_minimum_required(VERSION 3.10)
 
 project(MeshClouder)
 
+find_package(OpenGL REQUIRED)
+
 set(CMAKE_CXX_COMPILER g++)
 set(CMAKE_CXX_FLAGS "-std=c++23 -Wall")
 
+# Project directories
 set(SOURCE_DIR src)
 set(INCLUDE_DIR include)
 
+# Dependencies include directories
+set(OBJLOADER_INCLUDE_DIR dependencies/OBJ_Loader/include)
+set(HAPPLY_INCLUDE_DIR dependencies/happly/include)
+set(GLFW_INCLUDE_DIR dependencies/GLFW/include)
+set(GLEW_INCLUDE_DIR dependencies/GLEW/include)
+set(GLM_INCLUDE_DIR dependencies/GLM/include)
+set(IMGUI_INCLUDE_DIR dependencies/ImGui/include)
+
+# Dependencies lib directories
+set(GLFW_LIBRARY ${CMAKE_SOURCE_DIR}/dependencies/GLFW/lib-mingw-w64/libglfw3.a)
+set(GLEW_LIBRARY ${CMAKE_SOURCE_DIR}/dependencies/GLEW/lib/Release/x64/glew32s.lib)
+
+# Implementations
+set(IMGUI_IMPL
+    dependencies/ImGui/src/imgui_demo.cpp
+    dependencies/ImGui/src/imgui_draw.cpp
+    dependencies/ImGui/src/imgui_tables.cpp
+    dependencies/ImGui/src/imgui_widgets.cpp
+    dependencies/ImGui/src/imgui.cpp
+    dependencies/ImGui/src/impl/imgui_impl_glfw.cpp
+    dependencies/ImGui/src/impl/imgui_impl_opengl3.cpp
+)
+
+set(PROJECT_IMPL
+    ${SOURCE_DIR}/main.cpp
+)
+
 set(SOURCES
-    src/main.cpp
+    ${IMGUI_IMPL}
+    ${PROJECT_IMPL}
 )
 
 set(INCLUDES
-    
+    ${INCLUDE_DIR}
+    ${OBJLOADER_INCLUDE_DIR}
+    ${HAPPLY_INCLUDE_DIR}
+    ${GLFW_INCLUDE_DIR}
+    ${GLEW_INCLUDE_DIR}
+    ${GLM_INCLUDE_DIR}
+    ${IMGUI_INCLUDE_DIR}
+)
+
+include_directories(meshclouder PUBLIC 
+    ${INCLUDES}
 )
 
 add_executable(meshclouder ${SOURCES})
 
-target_include_directories(meshclouder PUBLIC ${INCLUDE_DIR})
+add_definitions(-DGLEW_STATIC=1)
+
+target_link_libraries(meshclouder
+    ${OPENGL_LIBRARY}
+    ${GLFW_LIBRARY}
+    ${GLEW_LIBRARY}
+)
