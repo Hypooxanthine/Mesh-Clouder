@@ -5,10 +5,11 @@
 
 #include <iostream>
 
+#include "Data/Mesh.h"
 #include "ExternalData/ObjectLoader.h"
 
 MainState::MainState()
-    : State()
+    : State(), m_Mesh(nullptr)
 {
 
 }
@@ -21,20 +22,7 @@ MainState::~MainState()
 void MainState::update()
 {
     if (m_ShouldImportMesh)
-    {
-        std::cout << "Importing mesh\n";
-        try
-        {
-            m_Mesh = std::move(ObjectLoader::LoadMesh());
-            m_MeshLoaded = true;
-            std::cout << "Mesh loaded.\n";
-        }
-        catch (std::exception& e)
-        {
-            std::cout << "Couldn't load mesh.\n";
-        }
-        m_ShouldImportMesh = false;
-    }
+        importMesh();
 }
 
 void MainState::render()
@@ -79,4 +67,20 @@ void MainState::renderImGui()
     ImGui::Begin("Properties");
     ImGui::End();
     //ImGui::ShowDemoWindow();
+}
+
+void MainState::importMesh()
+{
+    std::cout << "Importing mesh\n";
+    try
+    {
+        m_Mesh = std::make_unique<Mesh>(std::move(ObjectLoader::LoadMesh()));
+        m_MeshLoaded = true;
+        std::cout << "Mesh loaded.\n";
+    }
+    catch (std::exception& e)
+    {
+        std::cout << "Couldn't load mesh.\n";
+    }
+    m_ShouldImportMesh = false;
 }

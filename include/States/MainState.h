@@ -2,7 +2,7 @@
 
 #include "States/State.h"
 
-#include "Data/Mesh.h"
+class Mesh;
 
 class MainState : public State
 {
@@ -15,8 +15,11 @@ public:
     virtual void renderImGui() override;
 
 private:
+    void importMesh();
+
+private:
     bool m_ShouldImportMesh = false;
 
     bool m_MeshLoaded = false;
-    Mesh m_Mesh;
+    std::unique_ptr<Mesh> m_Mesh;
 };

@@ -13,6 +13,7 @@ class Mesh
 {
 public:
     Mesh() = default;
+    ~Mesh() = default;
     Mesh(Mesh&& other);
     Mesh& operator=(Mesh&& other);
 
