@@ -80,7 +80,7 @@ void MainState::importMesh()
     }
     catch (std::exception& e)
     {
-        std::cout << "Couldn't load mesh.\n";
+        std::cout << e.what() << std::endl;
     }
     m_ShouldImportMesh = false;
 }
