@@ -55,6 +55,9 @@ set(PROJECT_IMPL
     ${SOURCE_DIR}/States/MainState.cpp
     ${SOURCE_DIR}/Data/Mesh.cpp
     ${SOURCE_DIR}/Data/PointCloud.cpp
+    ${SOURCE_DIR}/ExternalData/ObjectLoader.cpp
+    ${SOURCE_DIR}/ExternalData/FileExplorer_Unix.cpp
+    ${SOURCE_DIR}/ExternalData/FileExplorer_Windows.cpp
 )
 
 set(SOURCES

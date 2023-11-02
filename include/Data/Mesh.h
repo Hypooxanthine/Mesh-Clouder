@@ -12,7 +12,9 @@
 class Mesh
 {
 public:
-    Mesh();
+    Mesh() = default;
+    Mesh(Mesh&& other);
+    Mesh& operator=(Mesh&& other);
 
     /**
      * @brief Reserves memory space for vertices. Avoid multiple memory extension of vertices vector.

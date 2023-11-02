@@ -1,5 +1,18 @@
 #include "Data/Mesh.h"
 
+Mesh::Mesh(Mesh&& other)
+{
+    *this = std::move(other);
+}
+
+Mesh& Mesh::operator=(Mesh&& other)
+{
+    m_Vertices = std::move(other.m_Vertices);
+    m_Indices = std::move(other.m_Indices);
+
+    return *this;
+}
+
 void Mesh::reserveVertices(unsigned int nb)
 {
     m_Vertices.reserve(nb);

@@ -2,6 +2,8 @@
 
 #include "States/State.h"
 
+#include "Data/Mesh.h"
+
 class MainState : public State
 {
 public:
@@ -14,4 +16,7 @@ public:
 
 private:
     bool m_ShouldImportMesh = false;
+
+    bool m_MeshLoaded = false;
+    Mesh m_Mesh;
 };
