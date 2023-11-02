@@ -13,5 +13,5 @@ public:
     virtual void renderImGui() override;
 
 private:
-
+    bool m_ShouldImportMesh = false;
 };

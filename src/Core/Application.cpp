@@ -35,6 +35,7 @@ void Application::initGLFW()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
+    //glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
     m_Window = glfwCreateWindow(1000, 800, "Mesh Clouder", NULL, NULL);
 
     if (!m_Window)
@@ -54,6 +55,8 @@ void Application::initImGui()
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // IF using Docking Branch
+    //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+    io.FontGlobalScale = 1.3f;
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_Window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
@@ -94,7 +97,11 @@ void Application::renderImGui()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+
     m_CurrentState->renderImGui();
+
     ImGui::Render();
+    ImGui::EndFrame();
+    
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
