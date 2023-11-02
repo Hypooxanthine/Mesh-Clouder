@@ -1,6 +1,7 @@
 #include "States/MainState.h"
 
 #include <ImGui/imgui.h>
+#include <ImGui/imgui_internal.h>
 
 MainState::MainState()
     : State()
@@ -25,5 +26,10 @@ void MainState::render()
 
 void MainState::renderImGui()
 {
-    ImGui::ShowDemoWindow();
+    ImGui::DockSpaceOverViewport();
+
+    ImGui::Begin("Load a mesh");
+    ImGui::End();
+    ImGui::Begin("Load a mesh2");
+    ImGui::End();
 }

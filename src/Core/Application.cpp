@@ -64,6 +64,9 @@ void Application::run()
 {
     while (!glfwWindowShouldClose(m_Window))
     {
+        if (m_CurrentState->isPendingKilled())
+            m_CurrentState = std::move(m_CurrentState->getNextState());
+
         glfwPollEvents();
 
         update();
