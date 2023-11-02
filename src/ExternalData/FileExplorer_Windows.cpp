@@ -15,7 +15,7 @@ std::string FileExplorer::GetFileFromFileExplorer()
     ofn.hwndOwner = nullptr;
     ofn.lpstrFile = szFile;
     ofn.nMaxFile = MAX_PATH;
-    ofn.lpstrFilter = "All Files (*.*)\0*.*\0";
+    ofn.lpstrFilter = "Fichiers OBJ et PLY (*.obj;*.ply)\0*.obj;*.ply\0Tous les fichiers (*.*)\0*.*\0";
     ofn.nFilterIndex = 1;
     ofn.lpstrFileTitle = nullptr;
     ofn.nMaxFileTitle = 0;
