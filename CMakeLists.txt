@@ -50,6 +50,9 @@ set(IMGUI_IMPL
 
 set(PROJECT_IMPL
     ${SOURCE_DIR}/main.cpp
+    ${SOURCE_DIR}/Data/Mesh.cpp
+    ${SOURCE_DIR}/Data/PointCloud.cpp
+    ${SOURCE_DIR}/Core/Application.cpp
 )
 
 set(SOURCES
