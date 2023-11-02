@@ -6,7 +6,11 @@
 #include <ImGui/impl/imgui_impl_glfw.h>
 #include <ImGui/impl/imgui_impl_opengl3.h>
 
+#include "States/State.h"
+#include "States/MainState.h"
+
 Application::Application()
+    : m_CurrentState(std::make_unique<MainState>())
 {
     initGLFW();
     initImGui();
@@ -61,19 +65,33 @@ void Application::run()
     while (!glfwWindowShouldClose(m_Window))
     {
         glfwPollEvents();
- 
-        /* From Dear ImGui doc */
-        // Start the Dear ImGui frame
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-        ImGui::ShowDemoWindow(); // Show demo window! :)
 
-        // Rendering
-        glClear(GL_COLOR_BUFFER_BIT);
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        update();
+        render();
+        renderImGui();
 
         glfwSwapBuffers(m_Window);
     }
+}
+
+void Application::update()
+{
+    m_CurrentState->update();
+}
+
+void Application::render()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+    m_CurrentState->render();
+}
+
+void Application::renderImGui()
+{
+    // Start the Dear ImGui frame
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+    m_CurrentState->renderImGui();
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
