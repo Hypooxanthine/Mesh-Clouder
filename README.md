@@ -22,7 +22,9 @@ List all the packages needed. Should be done very soon, I need to configure a vi
 
 Use CMake to configure and build the project for your platform.
 
-Linux terminal or VSCode embedded terminal on Linux:
+(From repository root folder)
+
+Linux:
 
 ```bash
 mkdir build
@@ -31,10 +33,14 @@ cmake ..
 make
 ```
 
-VSCode on Windows:
+Windows:
 
-- Install "CMake Tools" extension.
-- Configure then build all projects on CMake Tools' menu.
+```bash
+mkdir build
+cd build
+cmake .. -G "MinGW Makefiles"
+make
+```
 
 The executable will be created in the build directory.
 
