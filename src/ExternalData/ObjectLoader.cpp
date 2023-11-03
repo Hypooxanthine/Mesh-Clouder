@@ -12,8 +12,6 @@ Mesh ObjectLoader::LoadMesh(const std::string& filePath)
         return LoadOBJMesh(filePath);
     else if (filePath.ends_with(".ply"))
         return LoadPLYMesh(filePath);
-
-    std::cout << filePath << std::endl;
     
     throw FileNotLoaded("Unsupported file extension for \"" + filePath + "\".");
 }
