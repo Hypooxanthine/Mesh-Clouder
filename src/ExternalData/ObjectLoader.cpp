@@ -12,15 +12,17 @@ Mesh ObjectLoader::LoadMesh(const std::string& filePath)
         return LoadOBJMesh(filePath);
     else if (filePath.ends_with(".ply"))
         return LoadPLYMesh(filePath);
+
+    std::cout << filePath << std::endl;
     
-    throw FileNotLoaded();
+    throw FileNotLoaded("Unsupported file extension for \"" + filePath + "\".");
 }
 
 Mesh ObjectLoader::LoadMesh()
 {
     std::string path = FileExplorer::GetFileFromFileExplorer();
 
-    if (path.empty()) throw FileNotLoaded();
+    if (path.empty()) throw FileNotLoaded("Empty path.");
 
     return LoadMesh(path);
 }
@@ -30,7 +32,7 @@ Mesh ObjectLoader::LoadOBJMesh(const std::string& filePath)
     objl::Loader l;
 
     if (!l.LoadFile(filePath))
-        throw FileNotLoaded();
+        throw FileNotLoaded("OBJ_Loader couldn't load file.");
     
     Mesh mesh;
 
@@ -69,5 +71,5 @@ Mesh ObjectLoader::LoadOBJMesh(const std::string& filePath)
 
 Mesh ObjectLoader::LoadPLYMesh(const std::string& filePath)
 {
-    throw FileNotLoaded();
+    throw FileNotLoaded(".ply files are not supported yet.");
 }

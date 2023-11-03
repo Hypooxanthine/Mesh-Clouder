@@ -8,7 +8,7 @@ endif(POLICY CMP0072)
 find_package(OpenGL REQUIRED)
 
 set(CMAKE_CXX_COMPILER g++)
-set(CMAKE_CXX_FLAGS "-std=c++23 -Wall")
+set(CMAKE_CXX_FLAGS "-std=c++23 -Wall -Wno-deprecated-declarations")
 
 # Project directories
 set(SOURCE_DIR src)
@@ -22,8 +22,10 @@ set(GLM_INCLUDE_DIR dependencies/GLM/include)
 set(IMGUI_INCLUDE_DIR dependencies/ImGui/include)
 if(WIN32)
     set(GLFW_INCLUDE_DIR dependencies/GLFW/include)
+    set(OSDIALOG_INCLUDE_DIR )
 elseif(UNIX)
     set(GLFW_INCLUDE_DIR )
+    set(OSDIALOG_INCLUDE_DIR dependencies/osdialog/include)
 endif(WIN32)
 
 # Dependencies lib directories
@@ -48,6 +50,17 @@ set(IMGUI_IMPL
     dependencies/ImGui/src/impl/imgui_impl_opengl3.cpp
 )
 
+if(WIN32)
+    set(OSDIALOG_IMPL )
+endif(WIN32)
+
+if(UNIX)
+    set(OSDIALOG_IMPL
+        dependencies/osdialog/src/osdialog.c
+        dependencies/osdialog/src/osdialog_gtk2.c
+    )
+endif(UNIX)
+
 set(PROJECT_IMPL
     ${SOURCE_DIR}/main.cpp
     ${SOURCE_DIR}/Core/Application.cpp
@@ -62,6 +75,7 @@ set(PROJECT_IMPL
 
 set(SOURCES
     ${IMGUI_IMPL}
+    ${OSDIALOG_IMPL}
     ${PROJECT_IMPL}
 )
 
@@ -73,6 +87,7 @@ set(INCLUDES
     ${GLEW_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
     ${IMGUI_INCLUDE_DIR}
+    ${OSDIALOG_INCLUDE_DIR}
 )
 
 include_directories(meshclouder PUBLIC 
@@ -88,3 +103,17 @@ target_link_libraries(meshclouder
     ${GLFW_LIBRARY}
     ${GLEW_LIBRARY}
 )
+
+if(UNIX)
+    # Include GTK
+    find_package(PkgConfig)
+    pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+
+    include_directories(${GTK3_INCLUDE_DIRS})
+    link_directories(${GTK3_LIBRARY_DIRS})
+    add_definitions(${GTK3_CFLAGS_OTHER})
+
+    # Add GTK as a dependency
+    target_link_libraries(meshclouder ${GTK3_LIBRARIES})
+    unset(GTK_PATH)
+endif(UNIX)
