@@ -8,7 +8,7 @@ endif(POLICY CMP0072)
 find_package(OpenGL REQUIRED)
 
 set(CMAKE_CXX_COMPILER g++)
-set(CMAKE_CXX_FLAGS "-std=c++23 -Wall -Wno-deprecated-declarations")
+set(CMAKE_CXX_FLAGS "-std=c++23 -Wall -Wno-volatile")
 
 # Project directories
 set(SOURCE_DIR src)
@@ -19,6 +19,7 @@ set(OBJLOADER_INCLUDE_DIR dependencies/OBJ_Loader/include)
 set(HAPPLY_INCLUDE_DIR dependencies/happly/include)
 set(GLM_INCLUDE_DIR dependencies/GLM/include)
 set(IMGUI_INCLUDE_DIR dependencies/ImGui/include)
+set(STB_IMAGE_INCLUDE_DIR dependencies/stb_image/include)
 if(WIN32)
     set(GLEW_INCLUDE_DIR dependencies/GLEW/include)
     set(GLFW_INCLUDE_DIR dependencies/GLFW/include)
@@ -32,7 +33,7 @@ endif(WIN32)
 # Dependencies lib directories
 if(WIN32)
     set(GLFW_LIBRARY ${CMAKE_SOURCE_DIR}/dependencies/GLFW/lib-mingw-w64/libglfw3.a)
-    set(GLEW_LIBRARY ${CMAKE_SOURCE_DIR}/dependencies/GLEW/lib/Release/x64/glew32s.lib)
+    set(GLEW_LIBRARY ${CMAKE_SOURCE_DIR}/dependencies/GLEW/lib/Mingw64/libglew32.a opengl32)
 elseif(UNIX)
     set(GLFW_LIBRARY glfw3 X11)
     set(GLEW_LIBRARY GLEW)
@@ -49,6 +50,7 @@ set(IMGUI_IMPL
     dependencies/ImGui/src/impl/imgui_impl_glfw.cpp
     dependencies/ImGui/src/impl/imgui_impl_opengl3.cpp
 )
+set(STB_IMAGE_IMPL dependencies/stb_image/src/stb_image.cpp)
 if(WIN32)
     set(OSDIALOG_IMPL )
 elseif(UNIX)
@@ -68,11 +70,19 @@ set(PROJECT_IMPL
     ${SOURCE_DIR}/ExternalData/ObjectLoader.cpp
     ${SOURCE_DIR}/ExternalData/FileExplorer_Unix.cpp
     ${SOURCE_DIR}/ExternalData/FileExplorer_Windows.cpp
+    ${SOURCE_DIR}/Rendering/IndexBuffer.cpp
+    ${SOURCE_DIR}/Rendering/Renderer.cpp
+    ${SOURCE_DIR}/Rendering/Shader.cpp
+    ${SOURCE_DIR}/Rendering/Texture.cpp
+    ${SOURCE_DIR}/Rendering/VertexArray.cpp
+    ${SOURCE_DIR}/Rendering/VertexBuffer.cpp
+    ${SOURCE_DIR}/Rendering/VertexBufferLayout.cpp
 )
 
 set(SOURCES
     ${IMGUI_IMPL}
     ${OSDIALOG_IMPL}
+    ${STB_IMAGE_IMPL}
     ${PROJECT_IMPL}
 )
 
@@ -85,6 +95,7 @@ set(INCLUDES
     ${GLM_INCLUDE_DIR}
     ${IMGUI_INCLUDE_DIR}
     ${OSDIALOG_INCLUDE_DIR}
+    ${STB_IMAGE_INCLUDE_DIR}
 )
 
 include_directories(meshclouder PUBLIC 
@@ -93,7 +104,7 @@ include_directories(meshclouder PUBLIC
 
 add_executable(meshclouder ${SOURCES})
 
-add_definitions(-DGLEW_STATIC=1)
+add_definitions(-D GLEW_STATIC)
 
 target_link_libraries(meshclouder
     ${OPENGL_LIBRARY}
