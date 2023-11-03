@@ -17,13 +17,14 @@ set(INCLUDE_DIR include)
 # Dependencies include directories
 set(OBJLOADER_INCLUDE_DIR dependencies/OBJ_Loader/include)
 set(HAPPLY_INCLUDE_DIR dependencies/happly/include)
-set(GLEW_INCLUDE_DIR dependencies/GLEW/include)
 set(GLM_INCLUDE_DIR dependencies/GLM/include)
 set(IMGUI_INCLUDE_DIR dependencies/ImGui/include)
 if(WIN32)
+    set(GLEW_INCLUDE_DIR dependencies/GLEW/include)
     set(GLFW_INCLUDE_DIR dependencies/GLFW/include)
     set(OSDIALOG_INCLUDE_DIR )
 elseif(UNIX)
+    set(GLEW_INCLUDE_DIR )
     set(GLFW_INCLUDE_DIR )
     set(OSDIALOG_INCLUDE_DIR dependencies/osdialog/include)
 endif(WIN32)
@@ -32,14 +33,13 @@ endif(WIN32)
 if(WIN32)
     set(GLFW_LIBRARY ${CMAKE_SOURCE_DIR}/dependencies/GLFW/lib-mingw-w64/libglfw3.a)
     set(GLEW_LIBRARY ${CMAKE_SOURCE_DIR}/dependencies/GLEW/lib/Release/x64/glew32s.lib)
-endif(WIN32)
-
-if(UNIX)
+elseif(UNIX)
     set(GLFW_LIBRARY glfw3 X11)
     set(GLEW_LIBRARY GLEW)
-endif(UNIX)
+endif(WIN32)
 
 # Implementations
+    # Libs
 set(IMGUI_IMPL
     dependencies/ImGui/src/imgui_demo.cpp
     dependencies/ImGui/src/imgui_draw.cpp
@@ -49,18 +49,15 @@ set(IMGUI_IMPL
     dependencies/ImGui/src/impl/imgui_impl_glfw.cpp
     dependencies/ImGui/src/impl/imgui_impl_opengl3.cpp
 )
-
 if(WIN32)
     set(OSDIALOG_IMPL )
-endif(WIN32)
-
-if(UNIX)
+elseif(UNIX)
     set(OSDIALOG_IMPL
         dependencies/osdialog/src/osdialog.c
         dependencies/osdialog/src/osdialog_gtk2.c
     )
-endif(UNIX)
-
+endif(WIN32)
+    # Project
 set(PROJECT_IMPL
     ${SOURCE_DIR}/main.cpp
     ${SOURCE_DIR}/Core/Application.cpp
