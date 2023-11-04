@@ -5,6 +5,10 @@
 
 #include "Rendering/GLCall.h"
 
+#if defined(WIN32)
+#define alloca(x) _malloca(x)
+#endif
+
 Shader::Shader()
 {
 }
@@ -111,7 +115,7 @@ unsigned int Shader::compileShader(unsigned int type, const std::string& source)
     {
         int length;
         GLCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
-        char* message = (char*)_malloca(length * sizeof(char));
+        char* message = (char*)alloca(length * sizeof(char));
         GLCall(glGetShaderInfoLog(id, length, &length, message));
         std::cout << "Failed to compiler " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << " shader!" << std::endl;
         std::cout << message << std::endl;
