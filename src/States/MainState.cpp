@@ -13,11 +13,11 @@
 #include "Rendering/VertexBufferLayout.h"
 #include "Rendering/IndexBuffer.h"
 
-float verticesData[] =
+Vertex verticesData[] =
 {
-    -0.5f, -0.5f, 0.f,   0.f, 0.f, 0.f,   0.f, 0.f,
-     0.5f, -0.5f, 0.f,   0.f, 0.f, 0.f,   1.f, 1.f,
-      0.f,  0.5f, 0.f,   0.f, 0.f, 0.f,   1.f, 0.f,
+    Vertex({-0.5f, -0.5f, 0.f},   {0.f, 0.f, 0.f},   {0.f, 0.f}),
+    Vertex({ 0.5f, -0.5f, 0.f},   {0.f, 0.f, 0.f},   {1.f, 1.f}),
+    Vertex({ 0.0f,  0.5f, 0.f},   {0.f, 0.f, 0.f},   {1.f, 0.f}),
 };
 
 unsigned int indicesData[] = 
@@ -29,7 +29,7 @@ MainState::MainState()
     : State(), m_Mesh(nullptr)
 {
     va = std::make_unique<VertexArray>();
-    vb = std::make_unique<VertexBuffer>(verticesData, 3 * 8 * sizeof(float));
+    vb = std::make_unique<VertexBuffer>(verticesData, 3 * sizeof(Vertex));
     layout = std::make_unique<VertexBufferLayout>();
     layout->pushFloat(3);
     layout->pushFloat(3);
