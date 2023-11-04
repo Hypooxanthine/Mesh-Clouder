@@ -3,11 +3,8 @@
 #include <GL/glew.h>
 #include <iostream>
 
-#if defined(WIN32)
-#define ASSERT(x) if(!(x)) __debugbreak();
-#elif defined(__unix__)
-#define ASSERT(x) if(!(x)) __builtin_trap();
-#endif
+#include "Core/Assert.h"
+
 #define GLCall(x) GLClearError();\
 	x;\
 	ASSERT(GLLogCall())
