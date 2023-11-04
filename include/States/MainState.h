@@ -2,6 +2,10 @@
 
 #include "States/State.h"
 
+#include "Rendering/Renderer.h"
+
+#include <memory>
+
 class Mesh;
 
 class MainState : public State
@@ -22,4 +26,14 @@ private:
 
     bool m_MeshLoaded = false;
     std::unique_ptr<Mesh> m_Mesh;
+
+    Renderer m_Renderer;
+
+    std::unique_ptr<VertexArray> va;
+    std::unique_ptr<VertexBuffer> vb;
+    std::unique_ptr<VertexBufferLayout> layout;
+    std::unique_ptr<IndexBuffer> ib;
+
+    std::unique_ptr<Shader> shader;
+    unsigned int texture;
 };

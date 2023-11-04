@@ -10,10 +10,19 @@
 #include "States/MainState.h"
 
 Application::Application()
-    : m_CurrentState(std::make_unique<MainState>())
 {
     initGLFW();
+
+    if (glewInit() != GLEW_OK)
+    {
+        glfwTerminate();
+        std::cerr << "Failed to initialize GLEW" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
     initImGui();
+
+    m_CurrentState = std::make_unique<MainState>();
 }
 
 Application::~Application()
@@ -31,9 +40,6 @@ void Application::initGLFW()
 {
     if (!glfwInit())
         std::exit(EXIT_FAILURE);
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
     //glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
     m_Window = glfwCreateWindow(1000, 800, "Mesh Clouder", NULL, NULL);
