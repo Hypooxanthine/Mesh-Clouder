@@ -38,7 +38,7 @@ MainState::MainState()
     ib = std::make_unique<IndexBuffer>(indicesData, 3);
 
     shader = std::make_unique<Shader>();
-    shader->loadFromFile("Resources/Shaders/vertex.shader", "Resources/Shaders/fragment.shader");
+    shader->loadFromFile("vertex.shader", "fragment.shader");
     
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -46,7 +46,7 @@ MainState::MainState()
 
 MainState::~MainState()
 {
-
+    glDeleteTextures(1, &texture);
 }
 
 void MainState::update()
@@ -81,6 +81,9 @@ void MainState::render()
     m_Renderer.draw(*va, *ib, *shader);
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindRenderbuffer(GL_RENDERBUFFER, 0); 
+    glDeleteFramebuffers(1, &fbo);
+    glDeleteRenderbuffers(1, &rbo);
 }
 
 void MainState::renderImGui()
@@ -120,7 +123,6 @@ void MainState::renderImGui()
 
     ImGui::Begin("Properties");
     ImGui::End();
-    //ImGui::ShowDemoWindow();
 }
 
 void MainState::importMesh()
