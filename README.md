@@ -71,8 +71,8 @@ The executable will be created in the build directory.
 
 ## Known problems
 
-On Linux with VSCode, environement variable "GTK_PATH" needs to be unset at start of each session. GTK will also complain about canberra-gtk-module failed to be loaded. It does not appear outside of VSCode.
-Disabling GTK_PATH in VSCode embedded terminal :
+On Linux with VSCode, environement variable "GTK_PATH" *sometimes* needs to be unset at start of a session. GTK could also complain about canberra-gtk-module failed to be loaded. It does not appear outside of VSCode.
+Disabling GTK_PATH in VSCode embedded terminal (you should store its value somewhere but it appears it recovers it on its own at start of each session on VSCode):
 
 ```bash
 unset GTK_PATH
