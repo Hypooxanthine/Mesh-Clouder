@@ -76,7 +76,10 @@ set(PROJECT_IMPL
     ${SOURCE_DIR}/Rendering/Texture.cpp
     ${SOURCE_DIR}/Rendering/VertexArray.cpp
     ${SOURCE_DIR}/Rendering/VertexBuffer.cpp
+    ${SOURCE_DIR}/Rendering/Objects/RenderObject.cpp
+    ${SOURCE_DIR}/Rendering/Objects/RenderMesh.cpp
     ${SOURCE_DIR}/Rendering/VertexBufferLayout.cpp
+    ${SOURCE_DIR}/Editor/ObjectEditor.cpp
 )
 
 set(SOURCES

@@ -11,3 +11,8 @@ void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& 
     shader.bind();
     GLCall(glDrawElements(GL_TRIANGLES, (GLsizei)ib.getCount(), GL_UNSIGNED_INT, nullptr));
 }
+
+void Renderer::draw(const RenderObject& object) const
+{
+    draw(object.getVertexArray(), object.getIndexBuffer(), object.getShader());
+}

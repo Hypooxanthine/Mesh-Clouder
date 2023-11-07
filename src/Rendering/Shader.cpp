@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <filesystem>
 
 #include "Rendering/GLCall.h"
 
@@ -28,7 +29,7 @@ bool Shader::loadFromFile(const std::string& vertexShaderPath, const std::string
     ifs.open(vertexShaderPath);
         if (!ifs.is_open())
         {
-            std::cout << "Couldn't load \"" << vertexShaderPath << "\"." << std::endl;
+            std::cout << "Couldn't load \"" << std::filesystem::current_path() << "\\" << vertexShaderPath << "\"." << std::endl;
             return false;
         }
 
@@ -44,7 +45,7 @@ bool Shader::loadFromFile(const std::string& vertexShaderPath, const std::string
     ifs.open(fragmentShaderPath);
         if (!ifs.is_open())
         {
-            std::cout << "Couldn't load \"" << fragmentShaderPath << "\"." << std::endl;
+            std::cout << "Couldn't load \"" << std::filesystem::current_path() << fragmentShaderPath << "\\" << "\"." << std::endl;
             return false;
         }
 

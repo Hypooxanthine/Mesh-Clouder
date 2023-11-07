@@ -1,8 +1,21 @@
 #include "Data/Mesh.h"
 
+Mesh::Mesh(const Mesh& other)
+{
+    *this = other;
+}
+
 Mesh::Mesh(Mesh&& other)
 {
     *this = std::move(other);
+}
+
+Mesh& Mesh::operator=(const Mesh& other)
+{
+    m_Vertices = other.m_Vertices;
+    m_Indices = other.m_Indices;
+
+    return *this;
 }
 
 Mesh& Mesh::operator=(Mesh&& other)
@@ -59,4 +72,14 @@ size_t Mesh::getIndicesCount() const
 size_t Mesh::getTrianglesCount() const
 {
     return getIndicesCount() / 3;
+}
+
+const Vertex* Mesh::getRawVerticesData() const
+{
+    return m_Vertices.data();
+}
+
+const unsigned int* Mesh::getRawIndicesData() const
+{
+    return m_Indices.data();
 }

@@ -14,7 +14,9 @@ class Mesh
 public:
     Mesh() = default;
     ~Mesh() = default;
+    Mesh(const Mesh& other);
     Mesh(Mesh&& other);
+    Mesh& operator=(const Mesh& other);
     Mesh& operator=(Mesh&& other);
 
     /**
@@ -80,6 +82,20 @@ public:
      * @return size_t The number of triangles. This value is \ref getIndicesCount / 3.
      */
     size_t getTrianglesCount() const;
+
+    /**
+     * @brief Get the raw vertices data (for example, to give to OpenGL).
+     * 
+     * @return const Vertex* Raw vertices data.
+     */
+    const Vertex* getRawVerticesData() const;
+
+    /**
+     * @brief Get the rax indices data (for example, to give to OpenGL).
+     * 
+     * @return const unsigned* Raw indices data.
+     */
+    const unsigned int* getRawIndicesData() const;
 
 private:
     std::vector<Vertex> m_Vertices;

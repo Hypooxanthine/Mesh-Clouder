@@ -4,9 +4,12 @@
 
 #include <Windows.h>
 #include <commdlg.h>
+#include <filesystem>
 
 std::string FileExplorer::GetFileFromFileExplorer()
 {
+    auto backupPath = std::filesystem::current_path();
+
     OPENFILENAME ofn;
     char szFile[MAX_PATH] = ""; // Stores selected file path
 
@@ -22,7 +25,10 @@ std::string FileExplorer::GetFileFromFileExplorer()
     ofn.lpstrInitialDir = nullptr;
     ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
-    if (GetOpenFileNameA(&ofn))
+    auto success = GetOpenFileNameA(&ofn);
+    std::filesystem::current_path(backupPath);
+    
+    if (success)
         return std::string(szFile);
 
     return std::string(); // Empty string if user cancelled file selection

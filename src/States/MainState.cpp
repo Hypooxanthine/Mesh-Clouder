@@ -5,48 +5,16 @@
 
 #include <iostream>
 
-#include "Data/Mesh.h"
 #include "ExternalData/ObjectLoader.h"
-
-#include "Rendering/VertexArray.h"
-#include "Rendering/VertexBuffer.h"
-#include "Rendering/VertexBufferLayout.h"
-#include "Rendering/IndexBuffer.h"
-
-Vertex verticesData[] =
-{
-    Vertex({-0.5f, -0.5f, 0.f},   {0.f, 0.f, 0.f},   {0.f, 0.f}),
-    Vertex({ 0.5f, -0.5f, 0.f},   {0.f, 0.f, 0.f},   {1.f, 1.f}),
-    Vertex({ 0.0f,  0.5f, 0.f},   {0.f, 0.f, 0.f},   {1.f, 0.f}),
-};
-
-unsigned int indicesData[] = 
-{
-    0, 1, 2,
-};
+#include "Data/Mesh.h"
 
 MainState::MainState()
-    : State(), m_Mesh(nullptr)
+    : State()
 {
-    va = std::make_unique<VertexArray>();
-    vb = std::make_unique<VertexBuffer>(verticesData, 3 * sizeof(Vertex));
-    layout = std::make_unique<VertexBufferLayout>();
-    layout->pushFloat(3);
-    layout->pushFloat(3);
-    layout->pushFloat(2);
-    va->addBuffer(*vb, *layout);
-    ib = std::make_unique<IndexBuffer>(indicesData, 3);
-
-    shader = std::make_unique<Shader>();
-    shader->loadFromFile("vertex.shader", "fragment.shader");
-    
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
 }
 
 MainState::~MainState()
 {
-    glDeleteTextures(1, &texture);
 }
 
 void MainState::update()
@@ -57,33 +25,7 @@ void MainState::update()
 
 void MainState::render()
 {
-    unsigned int fbo;
-    GLCall(glGenFramebuffers(1, &fbo));
-    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
-
-    unsigned int rbo;
-    glGenRenderbuffers(1, &rbo);
-    glBindRenderbuffer(GL_RENDERBUFFER, rbo); 
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);  
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
-
-    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-
-    m_Renderer.draw(*va, *ib, *shader);
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glBindRenderbuffer(GL_RENDERBUFFER, 0); 
-    glDeleteFramebuffers(1, &fbo);
-    glDeleteRenderbuffers(1, &rbo);
+    m_ObjectEditor.render();
 }
 
 void MainState::renderImGui()
@@ -118,7 +60,7 @@ void MainState::renderImGui()
     ImGui::End();
 
     ImGui::Begin("Viewport");
-        ImGui::Image((void*)(intptr_t)texture, {800, 600});
+        ImGui::Image((void*)(intptr_t)m_ObjectEditor.getDrawnSceneTextureIndex(), {800, 600});
     ImGui::End();
 
     ImGui::Begin("Properties");
@@ -130,7 +72,8 @@ void MainState::importMesh()
     std::cout << "Importing mesh\n";
     try
     {
-        m_Mesh = std::make_unique<Mesh>(std::move(ObjectLoader::LoadMesh()));
+        Mesh mesh = ObjectLoader::LoadMesh();
+        m_ObjectEditor.setRenderMesh(std::move(mesh));
         m_MeshLoaded = true;
         std::cout << "Mesh loaded.\n";
     }
