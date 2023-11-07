@@ -1,6 +1,5 @@
 #include "States/MainState.h"
 
-#include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 
 #include <iostream>
@@ -61,9 +60,19 @@ void MainState::renderImGui()
         }
     ImGui::End();
 
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
     ImGui::Begin("Viewport");
-        ImGui::Image((void*)(intptr_t)m_ObjectEditor.getDrawnSceneTextureIndex(), {800, 600});
+        ImGui::BeginChild("RenderViewport");
+            auto vpSize = ImGui::GetWindowSize();
+            updateViewportSize(vpSize);
+            // Inverting V from UV because OpenGL textures are flipped vertically
+            ImGui::Image((void*)(intptr_t)m_ObjectEditor.getDrawnSceneTextureIndex(), vpSize, ImVec2(0, 1), ImVec2(1, 0));
+
+            handleViewportInputs();
+        ImGui::EndChild();
     ImGui::End();
+    ImGui::PopStyleVar(2);
 
     ImGui::Begin("Properties");
     ImGui::End();
@@ -84,4 +93,49 @@ void MainState::importMesh()
         std::cout << e.what() << std::endl;
     }
     m_ShouldImportMesh = false;
+}
+
+void MainState::updateViewportSize(const ImVec2& newSize)
+{
+    if (newSize.x == m_PreviousViewportSize.x && newSize.y == m_PreviousViewportSize.y)
+        return;
+    
+    m_ObjectEditor.onWindowAspectRatioChanged(newSize.x, newSize.y);
+    m_PreviousViewportSize = newSize;
+}
+
+void MainState::handleViewportInputs()
+{
+    if (ImGui::IsItemHovered())
+    {
+        auto mousePos = ImGui::GetMousePos();
+        
+        if (ImGui::IsMouseDragging(2) && (mousePos.x != m_PreviousMousePos.x || mousePos.y != m_PreviousMousePos.y))
+        {
+            if(m_JustStartedDragging)
+            {
+                m_JustStartedDragging = false;
+            }
+            else
+            {
+                glm::vec2 dragging = {mousePos.x - m_PreviousMousePos.x, mousePos.y - m_PreviousMousePos.y};
+                m_ObjectEditor.onUserDrag(dragging);
+            }
+
+            m_PreviousMousePos = mousePos;
+        }
+
+        if (ImGui::IsMouseReleased(2))
+        {
+            m_JustStartedDragging = true;
+        }
+
+        ImGuiIO& io = ImGui::GetIO();
+        if (io.MouseWheel != 0.f)
+            m_ObjectEditor.onUserZoom(io.MouseWheel);
+    }
+    else
+    {
+        m_JustStartedDragging = true;
+    }
 }

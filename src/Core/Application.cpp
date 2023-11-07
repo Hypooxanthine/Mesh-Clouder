@@ -95,7 +95,7 @@ void Application::update()
 
 void Application::render()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+    GLCall(glClear(GL_COLOR_BUFFER_BIT));
     m_CurrentState->render();
 }
 

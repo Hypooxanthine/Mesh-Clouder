@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ImGui/imgui.h>
+
 #include "States/State.h"
 
 #include "Editor/ObjectEditor.h"
@@ -18,10 +20,16 @@ public:
 
 private:
     void importMesh();
+    void updateViewportSize(const ImVec2& newSize);
+    void handleViewportInputs();
 
 private:
     ObjectEditor m_ObjectEditor;
 
     bool m_ShouldImportMesh = false;
     bool m_MeshLoaded = false;
+
+    ImVec2 m_PreviousViewportSize;
+    ImVec2 m_PreviousMousePos;
+    bool m_JustStartedDragging = true;
 };
