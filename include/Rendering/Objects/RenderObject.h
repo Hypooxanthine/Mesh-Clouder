@@ -15,6 +15,7 @@ public:
     inline const VertexArray& getVertexArray() const { return *m_VertexArray; }
     inline const IndexBuffer& getIndexBuffer() const { return *m_IndexBuffer; }
     inline const Shader& getShader() const { return *m_Shader; }
+    inline Shader& getShader() { return *m_Shader; }
 
 protected:
     std::unique_ptr<VertexArray> m_VertexArray = nullptr;

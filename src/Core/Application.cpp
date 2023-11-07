@@ -41,7 +41,9 @@ void Application::initGLFW()
     if (!glfwInit())
         std::exit(EXIT_FAILURE);
 
-    //glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+    
     m_Window = glfwCreateWindow(1000, 800, "Mesh Clouder", NULL, NULL);
 
     if (!m_Window)

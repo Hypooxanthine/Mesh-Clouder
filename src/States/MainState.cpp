@@ -21,6 +21,8 @@ void MainState::update()
 {
     if (m_ShouldImportMesh)
         importMesh();
+    
+    m_ObjectEditor.update();
 }
 
 void MainState::render()

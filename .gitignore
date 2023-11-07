@@ -27,7 +27,7 @@ CPackSourceConfig.cmake
 # Output files
 bin/
 build/*
-!build/*.shader
+!build/*.glsl
 out/
 Debug/
 Release/
