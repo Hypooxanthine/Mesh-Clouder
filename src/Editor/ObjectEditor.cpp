@@ -57,6 +57,8 @@ void ObjectEditor::render() const
 {
     GLCall(glEnable(GL_DEPTH_TEST));
 
+    GLCall(glViewport(0, 0, m_RenderTargetSize.x, m_RenderTargetSize.y));
+
     GLCall(glBindTexture(GL_TEXTURE_2D, m_Texture));
 
     unsigned int fbo;
