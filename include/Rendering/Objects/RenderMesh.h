@@ -3,6 +3,10 @@
 #include "RenderObject.h"
 #include "Data/Mesh.h"
 
+/**
+ * @brief A RenderMesh represents a mesh that can be drawn by the @ref Renderer class.
+ * 
+ */
 class RenderMesh : public RenderObject
 {
 public:

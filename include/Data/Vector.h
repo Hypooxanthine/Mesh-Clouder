@@ -24,6 +24,11 @@ using Vector2u = Vector2<unsigned int>;
 using Vector2f = Vector2<float>;
 using Vector2d = Vector2<double>;
 
+/**
+ * @brief Stores a 3 components vectors.
+ * 
+ * @tparam T Type of vector's components.
+ */
 template <typename T>
 class Vector3
 {

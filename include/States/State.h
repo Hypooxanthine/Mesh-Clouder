@@ -2,6 +2,10 @@
 
 #include <memory>
 
+/**
+ * @brief A state is used to fill the Application main loop with everything : rendering, data processing, ImGui widgets rendering. Only one state is existing currently ( @ref MainState ), but other states could be implemented.
+ * 
+ */
 class State
 {
 public:

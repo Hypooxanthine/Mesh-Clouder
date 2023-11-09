@@ -6,6 +6,10 @@
 #include "Rendering/IndexBuffer.h"
 #include "Rendering/Shader.h"
 
+/**
+ * @brief A RenderObject represents an object that can be drawn by the @ref Renderer.
+ * 
+ */
 class RenderObject
 {
 public:

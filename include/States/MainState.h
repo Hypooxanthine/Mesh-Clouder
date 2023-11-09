@@ -14,8 +14,22 @@ public:
     MainState();
     ~MainState();
 
+    /**
+     * @brief Deals with data each frame.
+     * 
+     */
     virtual void update() override;
+
+    /**
+     * @brief Renders things on screen each frame.
+     * 
+     */
     virtual void render() override;
+
+    /**
+     * @brief Renders ImGui widgets each frame.
+     * 
+     */
     virtual void renderImGui() override;
 
 private:

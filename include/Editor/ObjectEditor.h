@@ -7,30 +7,88 @@
 
 #include "glm/glm.hpp"
 
+/**
+ * @brief ObjectEditor class is used to render viewport scene.
+ * 
+ */
 class ObjectEditor
 {
 public:
     ObjectEditor();
     ~ObjectEditor();
 
+    /**
+     * @brief Deals with data each frame.
+     * 
+     */
     void update();
+
+    /**
+     * @brief Renders things on screen each frame.
+     * 
+     */
     void render() const;
 
+    /**
+     * @brief Get the OpenGL texture id the scene was rendered on.
+     * 
+     * @return unsigned int The OpenGL texture id.
+     */
     inline unsigned int getDrawnSceneTextureIndex() const { return m_Texture; }
 
+    /**
+     * @brief Set the RenderMesh object
+     * 
+     * @param rm 
+     */
     void setRenderMesh(const RenderMesh& rm);
+
+    /**
+     * @brief Set the Render Meshobject
+     * 
+     * @param rm 
+     */
     void setRenderMesh(RenderMesh&& rm);
 
+    /**
+     * @brief Has to be triggered when viewport was resized.
+     * 
+     * @param x New viewport width.
+     * @param y New viewport height.
+     */
     void onWindowAspectRatioChanged(float x, float y);
+
+    /**
+     * @brief Has to be triggered when user dragged the cursor the viewport.
+     * 
+     * @param drag Dragging vector since last frame.
+     */
     void onUserDrag(const glm::vec2& drag);
+
+    /**
+     * @brief Has to be triggered when user zoomed in/out in the viewport (mouse wheel).
+     * 
+     * @param value Zoom in value (positive for zooming in, negative for zooming out))
+     */
     void onUserZoom(float value);
 
 private:
     void loadDefaultCube();
 
+    /**
+     * @brief Computes model matrix from attribute parameters (none).
+     * @todo Needs to be removed. It has nothing to do with the editor and should be handled for each object.
+     * 
+     */
     void computeModel();
+
+    /// @brief Computes view matrix from attribute parameters (azimuth, elevation, view distance).
     void computeView();
+
+    /// @brief Computes projection matrix from attribute parameters (fov, aspect ratio, near clip, far clip).
     void computeProjection();
+
+    /// @brief Compute MVP (for vertices) and MV (for normals) matrices from model, view and projection matrices and updates shaders uniforms.
     void computeMVP();
 
 private:

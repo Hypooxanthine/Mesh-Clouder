@@ -5,6 +5,10 @@
 #include "Data/Mesh.h"
 #include "Data/PointCloud.h"
 
+/**
+ * @brief Deals with data loading.
+ * 
+ */
 class ObjectLoader
 {
 public:

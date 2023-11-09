@@ -8,6 +8,10 @@
 
 class State;
 
+/**
+ * @brief Application class is basically the whole program. Needs to be created and run.
+ * 
+ */
 class Application
 {
 public:
