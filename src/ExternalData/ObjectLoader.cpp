@@ -36,34 +36,31 @@ Mesh ObjectLoader::LoadOBJMesh(const std::string& filePath)
     
     Mesh mesh;
 
-    for (size_t m = 0 ; m < l.LoadedMeshes.size() ; m++)
+    for (size_t v = 0 ; v < l.LoadedVertices.size() ; v++)
     {
-        for (size_t v = 0 ; v < l.LoadedVertices.size() ; v++)
-        {
-            Vector3f pos;
-            pos.x = l.LoadedVertices[v].Position.X;
-            pos.y = l.LoadedVertices[v].Position.Y;
-            pos.z = l.LoadedVertices[v].Position.Z;
+        Vector3f pos;
+        pos.x = l.LoadedVertices[v].Position.X;
+        pos.y = l.LoadedVertices[v].Position.Y;
+        pos.z = l.LoadedVertices[v].Position.Z;
 
-            Vector3f normal;
-            normal.x = l.LoadedVertices[v].Normal.X;
-            normal.y = l.LoadedVertices[v].Normal.Y;
-            normal.z = l.LoadedVertices[v].Normal.Z;
+        Vector3f normal;
+        normal.x = l.LoadedVertices[v].Normal.X;
+        normal.y = l.LoadedVertices[v].Normal.Y;
+        normal.z = l.LoadedVertices[v].Normal.Z;
 
-            Vector2f texCoords;
-            texCoords.x = l.LoadedVertices[v].TextureCoordinate.X;
-            texCoords.y = l.LoadedVertices[v].TextureCoordinate.Y;
+        Vector2f texCoords;
+        texCoords.x = l.LoadedVertices[v].TextureCoordinate.X;
+        texCoords.y = l.LoadedVertices[v].TextureCoordinate.Y;
 
-            mesh.addVertex(Vertex(pos, normal, texCoords));
-        }
+        mesh.addVertex(Vertex(pos, normal, texCoords));
+    }
 
-        for (size_t i = 0 ; i < l.LoadedIndices.size() ; i += 3)
-        {
-            mesh.defineTriangle
-            (
-                l.LoadedIndices[i], l.LoadedIndices[i + 1], l.LoadedIndices[i + 2]
-            );
-        }
+    for (size_t i = 0 ; i < l.LoadedIndices.size() ; i += 3)
+    {
+        mesh.defineTriangle
+        (
+            l.LoadedIndices[i], l.LoadedIndices[i + 1], l.LoadedIndices[i + 2]
+        );
     }
 
     return mesh;
@@ -71,7 +68,75 @@ Mesh ObjectLoader::LoadOBJMesh(const std::string& filePath)
 
 Mesh ObjectLoader::LoadPLYMesh(const std::string& filePath)
 {
-    throw FileNotLoaded(".ply files are not supported yet.");
+    try
+    {
+        happly::PLYData plyIn(filePath);
+        Mesh out;
+        
+        auto xPos = plyIn.getElement("vertex").getProperty<float>("x");
+        auto yPos = plyIn.getElement("vertex").getProperty<float>("y");
+        auto zPos = plyIn.getElement("vertex").getProperty<float>("z");
+        auto xn = plyIn.getElement("vertex").getProperty<float>("nx");
+        auto yn = plyIn.getElement("vertex").getProperty<float>("ny");
+        auto zn = plyIn.getElement("vertex").getProperty<float>("nz");
+        
+
+        std::vector<float> u, v;
+        bool hasUV = true;
+
+        try
+        {
+            u = plyIn.getElement("vertex").getProperty<float>("s");
+            v = plyIn.getElement("vertex").getProperty<float>("t");
+        }
+        catch(const std::exception& e)
+        {
+            hasUV = false;
+        }
+        
+        out.reserveVertices(xPos.size());
+
+        for (size_t i = 0; i < xPos.size(); i++)
+        {
+            Vertex vertex;
+
+            vertex.position = {xPos[i], yPos[i], zPos[i]};
+            vertex.normal = {xn[i], yn[i], zn[i]};
+            vertex.texCoords = (hasUV ? Vector2f{u[i], v[i]} : Vector2f{0.f, 0.f});
+
+            std::cout << "Vertex added, pos: (" << vertex.position.x << ", " << vertex.position.y << ", " << vertex.position.z << ")\n";
+
+            out.addVertex(std::move(vertex));
+        }
+
+        try
+        {
+            auto indices = plyIn.getElement("face").getListProperty<unsigned int>("vertex_indices");
+            for (size_t i = 0; i < indices.size(); i++)
+                out.defineTriangle(indices[i][0], indices[i][1], indices[i][2]); // Does not throw anything so once we loaded vertices, we're sure no exception will be thrown, so we wont be defining triangles twice.
+        }
+        catch(const std::exception& e)
+        {
+            try
+            {
+                auto indices = plyIn.getElement("face").getListProperty<int>("vertex_indices");
+                for (size_t i = 0; i < indices.size(); i++)
+                    out.defineTriangle((unsigned int)indices[i][0], (unsigned int)indices[i][1], (unsigned int)indices[i][2]);
+            }
+            catch(const std::exception& e)
+            {
+                // We don't throw anything but we need to print that it is weird to load a mesh without face element or vertices property.
+                std::cerr << e.what() << '\n';
+            }
+            
+        }
+
+        return out;
+    }
+    catch(const std::exception& e)
+    {
+        throw FileNotLoaded(std::string("happly couldn't load file: ") + e.what());
+    }
 }
 
 std::string ObjectLoader::LoadTextFile(const std::string& filePath)
