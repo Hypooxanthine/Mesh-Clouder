@@ -1,5 +1,7 @@
 #include "ExternalData/ObjectLoader.h"
 
+#include <fstream>
+#include <filesystem>
 #include <happly/happly.h>
 #include <OBJ_Loader/OBJ_Loader.h>
 
@@ -70,4 +72,34 @@ Mesh ObjectLoader::LoadOBJMesh(const std::string& filePath)
 Mesh ObjectLoader::LoadPLYMesh(const std::string& filePath)
 {
     throw FileNotLoaded(".ply files are not supported yet.");
+}
+
+std::string ObjectLoader::LoadTextFile(const std::string& filePath)
+{
+    std::ifstream ifs;
+
+    ifs.open(filePath);
+        if (!ifs.is_open())
+            throw FileNotLoaded("Couldn't load " + GetAbsolutePath(filePath) + ".");
+
+        std::string rawText;
+        std::string line;
+        while (!ifs.eof())
+        {
+            std::getline(ifs, line);
+            rawText += line;
+            rawText += "\n";
+        }
+    ifs.close();
+
+    return rawText;
+}
+
+std::string ObjectLoader::GetAbsolutePath(const std::string& relativePath, bool addQuotes)
+{
+    std::string out =  std::filesystem::current_path().string() + "\\" + relativePath;
+
+    if (addQuotes) out = "\"" + out + "\"";
+
+    return out;
 }

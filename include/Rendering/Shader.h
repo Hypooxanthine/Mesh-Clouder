@@ -11,6 +11,16 @@ public:
 	Shader();
 	virtual ~Shader();
 	
+	/**
+	 * @brief Loads a shader from vertex, fragment & geometry shader paths. 
+	 * 
+	 * @param vertexShaderPath Vertex shader path.
+	 * @param fragmentShaderPath Fragment shader path.
+	 * @param geometryShaderPath Geometry shader path.
+	 * @return true If loaded successfuly.
+	 * @return false If at least one shader couldn't be loaded.
+	 */
+	bool loadFromFile(const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& geometryShaderPath);
 	bool loadFromFile(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
 	void unload();
 
@@ -26,6 +36,8 @@ public:
 
 private:
 	unsigned int compileShader(unsigned int type, const std::string& source);
+	
+	unsigned int createShader(const std::string& vertexShader, const std::string& fragmentShader, const std::string& geometryShader);
 	unsigned int createShader(const std::string& vertexShader, const std::string& fragmentShader);
 	int getUniformLocation(const std::string& name) const;
 	

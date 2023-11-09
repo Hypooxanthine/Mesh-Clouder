@@ -1,9 +1,9 @@
 #include "Rendering/Shader.h"
 
 #include <iostream>
-#include <fstream>
-#include <filesystem>
 
+#include "ExternalData/ObjectLoader.h"
+#include "Exceptions/FileNotLoaded.h"
 #include "Rendering/GLCall.h"
 
 #if defined(WIN32)
@@ -19,44 +19,44 @@ Shader::~Shader()
     unload();
 }
 
+bool Shader::loadFromFile(const std::string& vertexShaderPath, const std::string& fragmentShaderPath, const std::string& geometryShaderPath)
+{
+    unload();
+
+    std::string vertexShader, fragmentShader, geometryShader;
+    try
+    {
+        vertexShader = ObjectLoader::LoadTextFile(vertexShaderPath);
+        fragmentShader = ObjectLoader::LoadTextFile(fragmentShaderPath);
+        geometryShader = ObjectLoader::LoadTextFile(geometryShaderPath);
+    }
+    catch(const FileNotLoaded& e)
+    {
+        std::cerr << e.what() << '\n';
+        return false;
+    }
+
+    m_RendererID = createShader(vertexShader, fragmentShader, geometryShader);
+    if (m_RendererID == 0) return false;
+    
+    return true;
+}
+
 bool Shader::loadFromFile(const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
 {
     unload();
 
-    std::ifstream ifs;
-    std::string line;
-
-    ifs.open(vertexShaderPath);
-        if (!ifs.is_open())
-        {
-            std::cout << "Couldn't load \"" << std::filesystem::current_path() << "\\" << vertexShaderPath << "\"." << std::endl;
-            return false;
-        }
-
-        std::string vertexShader;
-        while (!ifs.eof())
-        {
-            std::getline(ifs, line);
-            vertexShader += line;
-            vertexShader += "\n";
-        }
-    ifs.close();
-
-    ifs.open(fragmentShaderPath);
-        if (!ifs.is_open())
-        {
-            std::cout << "Couldn't load \"" << std::filesystem::current_path() << fragmentShaderPath << "\\" << "\"." << std::endl;
-            return false;
-        }
-
-        std::string fragmentShader;
-        while (!ifs.eof())
-        {
-            std::getline(ifs, line);
-            fragmentShader += line;
-            fragmentShader += "\n";
-        }
-    ifs.close();
+    std::string vertexShader, fragmentShader;
+    try
+    {
+        vertexShader = ObjectLoader::LoadTextFile(vertexShaderPath);
+        fragmentShader = ObjectLoader::LoadTextFile(fragmentShaderPath);
+    }
+    catch(const FileNotLoaded& e)
+    {
+        std::cerr << e.what() << '\n';
+        return false;
+    }
 
     m_RendererID = createShader(vertexShader, fragmentShader);
     if (m_RendererID == 0) return false;
@@ -125,6 +125,26 @@ unsigned int Shader::compileShader(unsigned int type, const std::string& source)
     }
 
     return id;
+}
+
+unsigned int Shader::createShader(const std::string& vertexShader, const std::string& fragmentShader, const std::string& geometryShader)
+{
+    unsigned int program = glCreateProgram();
+    unsigned int vs = compileShader(GL_VERTEX_SHADER, vertexShader);
+    unsigned int fs = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
+    unsigned int gs = compileShader(GL_GEOMETRY_SHADER, geometryShader);
+
+    GLCall(glAttachShader(program, vs));
+    GLCall(glAttachShader(program, fs));
+    GLCall(glAttachShader(program, gs));
+    GLCall(glLinkProgram(program));
+    GLCall(glValidateProgram(program));
+
+    GLCall(glDeleteShader(vs));
+    GLCall(glDeleteShader(fs));
+    GLCall(glDeleteShader(gs));
+
+    return program;
 }
 
 unsigned int Shader::createShader(const std::string& vertexShader, const std::string& fragmentShader)
