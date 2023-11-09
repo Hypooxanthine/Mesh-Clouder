@@ -2,6 +2,8 @@
 
 #include "glm/gtc/matrix_transform.hpp"
 
+#include "ExternalData/ObjectLoader.h"
+
 ObjectEditor::ObjectEditor()
 {
     GLCall(glGenTextures(1, &m_Texture));
@@ -21,31 +23,15 @@ ObjectEditor::~ObjectEditor()
 
 void ObjectEditor::loadDefaultCube()
 {
-    Mesh m;
-
-    m.addVertex({{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}}); // A 0
-    m.addVertex({{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}}); // D 1
-    m.addVertex({{-0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}}); // E 2
-    m.addVertex({{-0.5f,  0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}}); // H 3
-    m.addVertex({{ 0.5f, -0.5f,  0.5f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}}); // B 4
-    m.addVertex({{ 0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}}); // C 5
-    m.addVertex({{ 0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}}); // F 6
-    m.addVertex({{ 0.5f,  0.5f, -0.5f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}}); // G 7
-
-    m.defineTriangle(0, 5, 4); // Bottom
-    m.defineTriangle(0, 1, 4);
-    m.defineTriangle(0, 4, 2); // Front
-    m.defineTriangle(4, 6, 2);
-    m.defineTriangle(4, 5, 6);
-    m.defineTriangle(5, 7, 6);
-    m.defineTriangle(5, 3, 7);
-    m.defineTriangle(5, 1, 3);
-    m.defineTriangle(0, 2, 3);
-    m.defineTriangle(0, 3, 1);
-    m.defineTriangle(2, 6, 3);
-    m.defineTriangle(6, 7, 3);
-
-    m_RenderMesh = std::make_unique<RenderMesh>(std::move(m));
+    try
+    {
+        setRenderMesh(RenderMesh(ObjectLoader::LoadMesh("Resources/defaultCube.obj")));
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        setRenderMesh(RenderMesh(Mesh()));
+    }
 }
 
 void ObjectEditor::update()
@@ -99,11 +85,13 @@ void ObjectEditor::render() const
 void ObjectEditor::setRenderMesh(const RenderMesh& rm)
 {
     m_RenderMesh = std::make_unique<RenderMesh>(rm);
+    computeMVP();
 }
 
 void ObjectEditor::setRenderMesh(RenderMesh&& rm)
 {
     m_RenderMesh = std::make_unique<RenderMesh>(std::move(rm));
+    computeMVP();
 }
 
 void ObjectEditor::onWindowAspectRatioChanged(float x, float y)

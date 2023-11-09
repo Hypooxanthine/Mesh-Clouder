@@ -110,7 +110,7 @@ private:
 
     // View
     float m_ViewAzimuth = 0.f;
-    float m_ViewElevation = 0.001f;
+    float m_ViewElevation = 90.f;
     float m_ViewDistance = 20.f;
 
     // Projection
