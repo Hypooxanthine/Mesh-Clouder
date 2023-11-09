@@ -69,6 +69,10 @@ The executable will be created in the build directory.
 
 ## Usage
 
+### Viewport
+
+- Orbit around the object while holding down the mouse wheel.
+
 ## Known problems
 
 On Linux with VSCode, environement variable "GTK_PATH" *sometimes* needs to be unset at start of a session. GTK could also complain about canberra-gtk-module failed to be loaded. It does not appear outside of VSCode.
