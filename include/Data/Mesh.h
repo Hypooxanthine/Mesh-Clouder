@@ -97,6 +97,9 @@ public:
      */
     const unsigned int* getRawIndicesData() const;
 
+    inline const std::vector<Vertex>& getVertices() const { return m_Vertices; }
+    inline const std::vector<unsigned int>& getIndices() const { return m_Indices; }
+
 private:
     std::vector<Vertex> m_Vertices;
     std::vector<unsigned int> m_Indices;

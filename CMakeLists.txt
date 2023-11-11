@@ -80,6 +80,7 @@ set(PROJECT_IMPL
     ${SOURCE_DIR}/Rendering/Objects/RenderMesh.cpp
     ${SOURCE_DIR}/Rendering/VertexBufferLayout.cpp
     ${SOURCE_DIR}/Editor/ObjectEditor.cpp
+    ${SOURCE_DIR}/Math/Math.cpp
 )
 
 set(SOURCES
