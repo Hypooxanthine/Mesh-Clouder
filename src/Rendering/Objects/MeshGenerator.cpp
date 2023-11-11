@@ -1,6 +1,6 @@
 #include "Rendering/Objects/MeshGenerator.h"
 
-RenderMesh MeshGenerator::GenCircle(unsigned int samples)
+Mesh MeshGenerator::GenCircle(unsigned int samples)
 {
     // At least 3 samples...
     if(samples < 3) samples = 3;
@@ -32,5 +32,10 @@ RenderMesh MeshGenerator::GenCircle(unsigned int samples)
 
     m.defineTriangle(0, samples, 1); // Last triangle
 
-    return RenderMesh(std::move(m));
+    return m;
+}
+
+Mesh MesgGenerator::GenGrid(const glm::vec2& gridSize, const glm::vec2 tileSize)
+{
+
 }
