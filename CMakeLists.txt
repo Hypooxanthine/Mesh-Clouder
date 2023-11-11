@@ -78,6 +78,7 @@ set(PROJECT_IMPL
     ${SOURCE_DIR}/Rendering/VertexBuffer.cpp
     ${SOURCE_DIR}/Rendering/Objects/RenderObject.cpp
     ${SOURCE_DIR}/Rendering/Objects/RenderMesh.cpp
+    ${SOURCE_DIR}/Rendering/Objects/MeshGenerator.cpp
     ${SOURCE_DIR}/Rendering/VertexBufferLayout.cpp
     ${SOURCE_DIR}/Editor/ObjectEditor.cpp
     ${SOURCE_DIR}/Math/Math.cpp

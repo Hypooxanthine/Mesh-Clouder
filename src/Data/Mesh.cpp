@@ -31,6 +31,11 @@ void Mesh::reserveVertices(unsigned int nb)
     m_Vertices.reserve(nb);
 }
 
+void Mesh::reserveTriangles(unsigned int nb)
+{
+    reserveVertices(nb * 3);
+}
+
 void Mesh::reserveIndices(unsigned int nb)
 {
     m_Indices.reserve(nb);

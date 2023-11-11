@@ -13,7 +13,7 @@
 class Math
 {
 public:
-    static Ray RayUnderCursor(const glm::mat4& viewProjection, const Vector2f& cursorPos, const Vector2i& viewportSize);
+    static Ray RayUnderCursor(const glm::vec3& cameraPos, const glm::mat4& viewProjection, const glm::vec2& cursorPos, const glm::vec2& viewportSize);
     static HitResult RayCastWithMesh(const Ray& ray, const Mesh& mesh);
 
     /**

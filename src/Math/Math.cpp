@@ -2,9 +2,21 @@
 
 #include <stdexcept>
 
-Ray Math::RayUnderCursor(const glm::mat4& viewProjection, const Vector2f& cursorPos, const Vector2i& viewportSize)
+Ray Math::RayUnderCursor(const glm::vec3& cameraPos, const glm::mat4& viewProjection, const glm::vec2& cursorPos, const glm::vec2& viewportSize)
 {
-    throw std::runtime_error("RayUnderCursor is not implemented yet.");
+    Ray out;
+    out.origin = cameraPos;
+
+    float mouseX = 2.f * cursorPos.x / viewportSize.x - 1.f;
+    float mouseY = 2.f * cursorPos.y / viewportSize.y - 1.f;
+
+    glm::mat4 invVP = glm::inverse(viewProjection);
+    glm::vec4 screenPos = glm::vec4(mouseX, -mouseY, 1.f, 1.f);
+    glm::vec4 worldPos = invVP * screenPos;
+
+    out.direction = glm::normalize(glm::vec3(worldPos));
+
+    return out;
 }
 
 HitResult Math::RayCastWithMesh(const Ray& ray, const Mesh& mesh)
@@ -43,7 +55,6 @@ HitResult Math::RayCastWithMesh(const Ray& ray, const Mesh& mesh)
         */
 
         glm::vec3 P = ray.origin + depth * ray.direction; // P is the intersection point
-        float epsilon = 0.0001f;
 
         glm::vec3 cp1 = glm::cross(B-A, P-A);
         glm::vec3 cp2 = glm::cross(C-B, P-B);
