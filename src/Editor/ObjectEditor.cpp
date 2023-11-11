@@ -19,6 +19,8 @@ ObjectEditor::ObjectEditor()
     computeMVP();
 
     GLCall(glClearColor(0.1f, 0.1f, 0.1f, 1.f));
+    GLCall(glEnable(GL_BLEND));
+    GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 }
 
 ObjectEditor::~ObjectEditor()

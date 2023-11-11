@@ -9,5 +9,5 @@ vec3 lightDirection = normalize(vec3(1.f, 1.f, 1.f));
 void main()
 {
 	float intensity = clamp(dot(lightDirection, normalize(v_normal)), 0.0, 1.0) * 0.55;
-	fragColor = v_vertexColor * intensity + vec4(0.4, 0.4, 0.4, 1.0);
+	fragColor = v_vertexColor * intensity + vec4(0.4, 0.4, 0.4, 0.2);
 }
