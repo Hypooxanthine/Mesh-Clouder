@@ -12,6 +12,7 @@ ObjectEditor::ObjectEditor()
     
     loadDefaultCube();
     m_BrushMesh = std::make_unique<RenderMesh>(MeshGenerator::GenCircle(64));
+    m_BrushMesh->getShader().loadFromFile("Resources/brushVert.glsl", "Resources/brushFrag.glsl");
 
     computeProjection();
     computeView();
@@ -97,6 +98,7 @@ void ObjectEditor::setRenderMesh(const RenderMesh& rm)
 void ObjectEditor::setRenderMesh(RenderMesh&& rm)
 {
     m_RenderMesh = std::make_unique<RenderMesh>(std::move(rm));
+    m_RenderMesh->getShader().loadFromFile("Resources/meshVert.glsl", "Resources/meshFrag.glsl");
     computeMVP();
 }
 

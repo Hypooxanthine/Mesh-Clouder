@@ -59,5 +59,4 @@ void RenderMesh::init()
     m_IndexBuffer = std::make_unique<IndexBuffer>(m_MeshData.getRawIndicesData(), m_MeshData.getIndicesCount());
 
     m_Shader = std::make_unique<Shader>();
-    m_Shader->loadFromFile("vertex.glsl", "fragment.glsl");
 }

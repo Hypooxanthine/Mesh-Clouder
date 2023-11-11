@@ -27,9 +27,9 @@ CPackSourceConfig.cmake
 # Output files
 bin/
 build/*
-!build/*.glsl
 !build/Resources
 !build/Resources/defaultCube.obj
+!build/Resources/*.glsl
 out/
 Debug/
 Release/
