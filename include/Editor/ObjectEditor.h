@@ -100,6 +100,7 @@ private:
 
     std::unique_ptr<RenderMesh> m_RenderMesh;
     std::unique_ptr<RenderMesh> m_BrushMesh;
+    std::unique_ptr<RenderMesh> m_CoordinateSystem;
     bool m_ShouldRenderBrush = false;
 
     // Controls

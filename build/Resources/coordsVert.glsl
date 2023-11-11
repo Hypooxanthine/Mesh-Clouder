@@ -8,12 +8,10 @@ uniform mat4 u_MVP;
 uniform mat4 u_MV;
 uniform mat4 u_P;
 
-out vec4 v_vertexColor;
-out vec3 v_normal;
+out vec4 fragPos;
 
 void main()
 {
-	v_vertexColor = vec4(1.0, 1.0, 1.0, 1.0);
-	v_normal = mat3(transpose(inverse(u_MV))) * normal;
+	fragPos = u_P * vec4(position, 1.0);
 	gl_Position = u_MVP * vec4(position, 1.0);
 }

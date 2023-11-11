@@ -11,8 +11,14 @@ ObjectEditor::ObjectEditor()
     GLCall(glGenTextures(1, &m_Texture));
     
     loadDefaultCube();
+    
     m_BrushMesh = std::make_unique<RenderMesh>(MeshGenerator::GenCircle(64));
     m_BrushMesh->getShader().loadFromFile("Resources/brushVert.glsl", "Resources/brushFrag.glsl");
+
+    m_CoordinateSystem = std::make_unique<RenderMesh>(MeshGenerator::GenQuad());
+    m_CoordinateSystem->getShader().loadFromFile("Resources/coordsVert.glsl", "Resources/coordsFrag.glsl");
+    m_CoordinateSystem->setScale(glm::vec3(50.f, 1.f, 50.f));
+    m_CoordinateSystem->setTranslation(glm::vec3(-25.f, 0.f, -25.f));
 
     computeProjection();
     computeView();
@@ -80,6 +86,7 @@ void ObjectEditor::render() const
     m_Renderer.draw(*m_RenderMesh);
     if (m_ShouldRenderBrush)
         m_Renderer.draw(*m_BrushMesh);
+    m_Renderer.draw(*m_CoordinateSystem);
 
     GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
     GLCall(glBindRenderbuffer(GL_RENDERBUFFER, 0));
@@ -186,6 +193,9 @@ void ObjectEditor::computeMVP()
 
     if (m_BrushMesh)
         updateRenderObjectMatrices(*m_BrushMesh);
+
+    if (m_CoordinateSystem)
+        updateRenderObjectMatrices(*m_CoordinateSystem);
 }
 
 void ObjectEditor::updateRenderObjectMatrices(RenderObject& obj)
@@ -196,4 +206,5 @@ void ObjectEditor::updateRenderObjectMatrices(RenderObject& obj)
     obj.getShader().bind();
     obj.getShader().setUniformMat4f("u_MVP", MVP);
     obj.getShader().setUniformMat4f("u_MV", MV);
+    obj.getShader().setUniformMat4f("u_P", obj.getTransform());
 }

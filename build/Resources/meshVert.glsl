@@ -6,6 +6,7 @@ layout(location = 2) in vec3 texCoords;
 
 uniform mat4 u_MVP;
 uniform mat4 u_MV;
+uniform mat4 u_P;
 
 out vec4 v_vertexColor;
 out vec3 v_normal;

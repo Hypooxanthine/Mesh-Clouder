@@ -35,7 +35,25 @@ Mesh MeshGenerator::GenCircle(unsigned int samples)
     return m;
 }
 
-Mesh MesgGenerator::GenGrid(const glm::vec2& gridSize, const glm::vec2 tileSize)
+Mesh MeshGenerator::GenQuad()
 {
+    Mesh m;
 
+    m.reserveVertices(4);
+    m.reserveTriangles(2);
+
+    const Vector3f normal = { 0.f, 1.f, 0.f };
+
+    // Order :
+    // A B
+    // D C
+    m.addVertex(Vertex{{0.f, 0.f, 0.f}, normal, {0.f, 1.f}});
+    m.addVertex(Vertex{{1.f, 0.f, 0.f}, normal, {1.f, 1.f}});
+    m.addVertex(Vertex{{0.f, 0.f, 1.f}, normal, {1.f, 0.f}});
+    m.addVertex(Vertex{{1.f, 0.f, 1.f}, normal, {0.f, 0.f}});
+
+    m.defineTriangle(2, 3, 1);
+    m.defineTriangle(2, 1, 0);
+
+    return m;
 }
