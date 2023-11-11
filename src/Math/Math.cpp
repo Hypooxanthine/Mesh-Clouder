@@ -90,9 +90,6 @@ glm::mat4 Math::AlignVectors(const glm::vec3& from, const glm::vec3& to)
 {
     float angle = glm::acos(glm::dot(from, to) / (glm::length(from) * glm::length(to)));
 
-    // Define angle sign
-    // TODO
-
     glm::vec3 n = glm::cross(from, to);
 
     glm::mat4 mat = glm::rotate(glm::mat4(1.f), angle, n);

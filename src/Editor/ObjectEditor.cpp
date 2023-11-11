@@ -11,7 +11,7 @@ ObjectEditor::ObjectEditor()
     GLCall(glGenTextures(1, &m_Texture));
     
     loadDefaultCube();
-    m_BrushMesh = std::make_unique<RenderMesh>(MeshGenerator::GenCircle(16));
+    m_BrushMesh = std::make_unique<RenderMesh>(MeshGenerator::GenCircle(64));
 
     computeProjection();
     computeView();
@@ -152,7 +152,7 @@ void ObjectEditor::onMouseMoved(float x, float y)
     }
 
     m_ShouldRenderBrush = true;
-    m_BrushMesh->setTranslation(res.position);
+    m_BrushMesh->setTranslation(res.position + res.normal * 0.001f);
     m_BrushMesh->setRotation(Math::AlignVectors(m_BrushMesh->getMeshData().getVertices()[0].normal, res.normal));
 
     updateRenderObjectMatrices(*m_BrushMesh);
