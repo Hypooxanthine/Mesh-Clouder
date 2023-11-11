@@ -19,6 +19,8 @@ public:
     RenderMesh& operator=(const RenderMesh& other);
     RenderMesh& operator=(RenderMesh&& other);
 
+    inline const Mesh& getMeshData() const { return m_MeshData; }
+
 private:
     void init();
 

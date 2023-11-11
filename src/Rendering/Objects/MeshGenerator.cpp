@@ -6,10 +6,11 @@ RenderMesh MeshGenerator::GenCircle(unsigned int samples)
     if(samples < 3) samples = 3;
 
     Mesh m;
+    m.reserveVertices(samples + 1);
     m.reserveTriangles(samples);
 
     // Pointing upwards
-    Vector3f normal{ 0.f, 1.f, 0.f };
+    const Vector3f normal{ 0.f, 1.f, 0.f };
 
     m.addVertex(Vertex({ 0.f, 0.f, 0.f }, normal, { 0.5f, 0.5f }));
     m.addVertex(Vertex({ 1.f, 0.f, 0.f }, normal, { 1.0f, 0.5f }));

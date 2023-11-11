@@ -72,15 +72,16 @@ public:
      */
     void onUserZoom(float value);
 
+    /**
+     * @brief Has to be triggered when user moved cursor.
+     * 
+     * @param x Mouse x RELATIVE TO VIEWPORT ORIGIN.
+     * @param y Mouse y RELATIVE TO VIEWPORT ORIGIN.
+     */
+    void onMouseMoved(float x, float y);
+
 private:
     void loadDefaultCube();
-
-    /**
-     * @brief Computes model matrix from attribute parameters (none).
-     * @todo Needs to be removed. It has nothing to do with the editor and should be handled for each object.
-     * 
-     */
-    void computeModel();
 
     /// @brief Computes view matrix from attribute parameters (azimuth, elevation, view distance).
     void computeView();
@@ -91,11 +92,15 @@ private:
     /// @brief Compute MVP (for vertices) and MV (for normals) matrices from model, view and projection matrices and updates shaders uniforms.
     void computeMVP();
 
+    void updateRenderObjectMatrices(RenderObject& obj);
+
 private:
     Renderer m_Renderer;
     mutable unsigned int m_Texture;
 
     std::unique_ptr<RenderMesh> m_RenderMesh;
+    std::unique_ptr<RenderMesh> m_BrushMesh;
+    bool m_ShouldRenderBrush = false;
 
     // Controls
     float m_OrbitSpeed = 0.5f;
@@ -105,8 +110,8 @@ private:
     glm::vec2 m_RenderTargetSize = { 800, 600 };
 
     // MVP model
-    glm::mat4 m_MVPMatrix, m_MVMatrix;
-    glm::mat4 m_ModelMatrix, m_ViewMatrix, m_ProjMatrix;
+    glm::mat4 m_VPMatrix;
+    glm::mat4 m_ViewMatrix, m_ProjMatrix;
 
     // View
     float m_ViewAzimuth = 0.f;
@@ -114,9 +119,9 @@ private:
     float m_ViewDistance = 20.f;
 
     // Projection
+    glm::vec3 m_CameraPos;
     float m_Fov = 45.f; // In degrees
     float m_AspectRatio = 800.f / 600.f;
     float m_NearClip = 0.1f;
     float m_FarClip = 10000.f;
-
 };

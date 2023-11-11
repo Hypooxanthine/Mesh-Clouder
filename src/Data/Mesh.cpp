@@ -33,7 +33,7 @@ void Mesh::reserveVertices(unsigned int nb)
 
 void Mesh::reserveTriangles(unsigned int nb)
 {
-    reserveVertices(nb * 3);
+    reserveIndices(nb * 3);
 }
 
 void Mesh::reserveIndices(unsigned int nb)

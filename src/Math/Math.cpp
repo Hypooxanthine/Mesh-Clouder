@@ -1,6 +1,9 @@
 #include "Math/Math.h"
 
 #include <stdexcept>
+#include <iostream>
+
+#include <glm/gtc/matrix_transform.hpp>
 
 Ray Math::RayUnderCursor(const glm::vec3& cameraPos, const glm::mat4& viewProjection, const glm::vec2& cursorPos, const glm::vec2& viewportSize)
 {
@@ -29,10 +32,11 @@ HitResult Math::RayCastWithMesh(const Ray& ray, const Mesh& mesh)
 
     for (size_t i = 0; i < indices.size(); i += 3)
     {
+        unsigned int iA = indices[i], iB = indices[i+1], iC = indices[i+2];
         // Positions of points of triangle
-        glm::vec3 A = { vertices[i].position.x, vertices[i].position.y, vertices[i].position.z };
-        glm::vec3 B = { vertices[i+1].position.x, vertices[i+1].position.y, vertices[i+1].position.z };
-        glm::vec3 C = { vertices[i+2].position.x, vertices[i+2].position.y, vertices[i+2].position.z };
+        glm::vec3 A = { vertices[iA].position.x, vertices[iA].position.y, vertices[iA].position.z };
+        glm::vec3 B = { vertices[iB].position.x, vertices[iB].position.y, vertices[iB].position.z };
+        glm::vec3 C = { vertices[iC].position.x, vertices[iC].position.y, vertices[iC].position.z };
 
         glm::vec3 n = glm::cross(B - A, C - A);
 
@@ -80,4 +84,18 @@ HitResult Math::RayCastWithMesh(const Ray& ray, const Mesh& mesh)
 bool Math::AreVectorsOfSameDirection(const glm::vec3& u, const glm::vec3& v)
 {
     return v.x / u.x > 0.f;
+}
+
+glm::mat4 Math::AlignVectors(const glm::vec3& from, const glm::vec3& to)
+{
+    float angle = glm::acos(glm::dot(from, to) / (glm::length(from) * glm::length(to)));
+
+    // Define angle sign
+    // TODO
+
+    glm::vec3 n = glm::cross(from, to);
+
+    glm::mat4 mat = glm::rotate(glm::mat4(1.f), angle, n);
+
+    return mat;
 }

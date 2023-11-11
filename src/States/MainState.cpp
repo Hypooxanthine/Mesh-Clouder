@@ -106,10 +106,10 @@ void MainState::updateViewportSize(const ImVec2& newSize)
 
 void MainState::handleViewportInputs()
 {
+    auto mousePos = ImGui::GetMousePos();
+
     if (ImGui::IsItemHovered())
     {
-        auto mousePos = ImGui::GetMousePos();
-        
         if (ImGui::IsMouseDragging(2) && (mousePos.x != m_PreviousMousePos.x || mousePos.y != m_PreviousMousePos.y))
         {
             if(m_JustStartedDragging)
@@ -121,8 +121,6 @@ void MainState::handleViewportInputs()
                 glm::vec2 dragging = {mousePos.x - m_PreviousMousePos.x, mousePos.y - m_PreviousMousePos.y};
                 m_ObjectEditor.onUserDrag(dragging);
             }
-
-            m_PreviousMousePos = mousePos;
         }
 
         if (ImGui::IsMouseReleased(2))
@@ -138,4 +136,11 @@ void MainState::handleViewportInputs()
     {
         m_JustStartedDragging = true;
     }
+
+    ImVec2 viewportPos = ImGui::GetItemRectMin();
+
+    if(mousePos.x != m_PreviousMousePos.x || mousePos.y != m_PreviousMousePos.y)
+        m_ObjectEditor.onMouseMoved(mousePos.x - viewportPos.x, mousePos.y - viewportPos.y);
+
+    m_PreviousMousePos = mousePos;
 }

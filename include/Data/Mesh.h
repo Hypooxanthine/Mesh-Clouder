@@ -27,18 +27,18 @@ public:
     void reserveVertices(unsigned int nb);
 
     /**
-     * @brief Reserves memory space for triangles. Basically is @ref Mesh::reserveVertices with number of vertices = number of triangles * 3.
-     * 
-     * @param nb The number of triangles to reserve.
-     */
-    void reserveTriangles(unsigned int nb);
-
-    /**
      * @brief Reserves memory space for indices. Avoid multiple memory extension of vertices vector.
      * 
      * @param nb The number of indices to reserve. Must be multiple of 3.
      */
     void reserveIndices(unsigned int nb);
+
+    /**
+     * @brief Reserves memory space for triangles. Basically is @ref Mesh::reserveIndices with number of vertices = number of triangles * 3.
+     * 
+     * @param nb The number of triangles to reserve.
+     */
+    void reserveTriangles(unsigned int nb);
 
     /**
      * @brief Clears vertices and indices.

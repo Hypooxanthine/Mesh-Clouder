@@ -25,4 +25,13 @@ public:
      * @return false Inverse directions.
      */
     static bool AreVectorsOfSameDirection(const glm::vec3& u, const glm::vec3& v);
+
+    /**
+     * @brief Returns a rotation matrix M so that M * "from" is aligned with "to".
+     * 
+     * @param from The vector to align
+     * @param to The target vector
+     * @return glm::mat4 Rotation to apply to "from" so that its aligned with "to"
+     */
+    static glm::mat4 AlignVectors(const glm::vec3& from, const glm::vec3& to);
 };

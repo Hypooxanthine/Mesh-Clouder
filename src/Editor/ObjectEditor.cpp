@@ -1,16 +1,20 @@
 #include "Editor/ObjectEditor.h"
 
-#include "glm/gtc/matrix_transform.hpp"
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "ExternalData/ObjectLoader.h"
+#include "Rendering/Objects/MeshGenerator.h"
+#include "Math/Math.h"
 
 ObjectEditor::ObjectEditor()
 {
     GLCall(glGenTextures(1, &m_Texture));
+    
     loadDefaultCube();
+    m_BrushMesh = std::make_unique<RenderMesh>(MeshGenerator::GenCircle(16));
+
     computeProjection();
     computeView();
-    computeModel();
     computeMVP();
 
     GLCall(glClearColor(0.1f, 0.1f, 0.1f, 1.f));
@@ -71,6 +75,8 @@ void ObjectEditor::render() const
     GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
     m_Renderer.draw(*m_RenderMesh);
+    if (m_ShouldRenderBrush)
+        m_Renderer.draw(*m_BrushMesh);
 
     GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
     GLCall(glBindRenderbuffer(GL_RENDERBUFFER, 0));
@@ -124,19 +130,42 @@ void ObjectEditor::onUserZoom(float value)
     computeMVP();
 }
 
-void ObjectEditor::computeModel()
+void ObjectEditor::onMouseMoved(float x, float y)
 {
-    m_ModelMatrix = glm::mat4(1.f);
+    //std::cout << "Viewport : " << m_RenderTargetSize.x << ", " << m_RenderTargetSize.y << std::endl;
+    //std::cout << "Mouse : " << x << ", " << y << std::endl;
+
+    if(!(x >= 0 && y >= 0 && x < m_RenderTargetSize.x && y < m_RenderTargetSize.y))
+    {
+        m_ShouldRenderBrush = false;
+        return;
+    }
+
+    Ray ray = Math::RayUnderCursor(m_CameraPos, m_VPMatrix, glm::vec2(x, y), m_RenderTargetSize);
+
+    HitResult res = Math::RayCastWithMesh(ray, m_RenderMesh->getMeshData());
+
+    if(!res.hasHit)
+    {
+        m_ShouldRenderBrush = false;
+        return;
+    }
+
+    m_ShouldRenderBrush = true;
+    m_BrushMesh->setTranslation(res.position);
+    m_BrushMesh->setRotation(Math::AlignVectors(m_BrushMesh->getMeshData().getVertices()[0].normal, res.normal));
+
+    updateRenderObjectMatrices(*m_BrushMesh);
 }
 
 void ObjectEditor::computeView()
 {
-    float cameraX = m_ViewDistance * sin(glm::radians(m_ViewElevation)) * sin(glm::radians(m_ViewAzimuth));
-    float cameraY = m_ViewDistance * cos(glm::radians(m_ViewElevation));
-    float cameraZ = m_ViewDistance * sin(glm::radians(m_ViewElevation)) * cos(glm::radians(m_ViewAzimuth));
+    m_CameraPos.x = m_ViewDistance * sin(glm::radians(m_ViewElevation)) * sin(glm::radians(m_ViewAzimuth));
+    m_CameraPos.y = m_ViewDistance * cos(glm::radians(m_ViewElevation));
+    m_CameraPos.z = m_ViewDistance * sin(glm::radians(m_ViewElevation)) * cos(glm::radians(m_ViewAzimuth));
     
     //m_ViewMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0.f, 0.f, -20.f));
-    m_ViewMatrix = glm::lookAt(glm::vec3(cameraX, cameraY, cameraZ), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
+    m_ViewMatrix = glm::lookAt(m_CameraPos, glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
 }
 
 void ObjectEditor::computeProjection()
@@ -146,13 +175,21 @@ void ObjectEditor::computeProjection()
 
 void ObjectEditor::computeMVP()
 {
-    m_MVPMatrix = m_ProjMatrix * m_ViewMatrix * m_ModelMatrix;
-    m_MVMatrix = m_ViewMatrix * m_ModelMatrix;
+    m_VPMatrix = m_ProjMatrix * m_ViewMatrix;
 
     if (m_RenderMesh)
-    {
-        m_RenderMesh->getShader().bind();
-        m_RenderMesh->getShader().setUniformMat4f("u_MVP", m_MVPMatrix);
-        m_RenderMesh->getShader().setUniformMat4f("u_MV", m_MVMatrix);
-    }
+        updateRenderObjectMatrices(*m_RenderMesh);
+
+    if (m_BrushMesh)
+        updateRenderObjectMatrices(*m_BrushMesh);
+}
+
+void ObjectEditor::updateRenderObjectMatrices(RenderObject& obj)
+{
+    glm::mat4 MV = m_ViewMatrix * obj.getTransform();
+    glm::mat4 MVP = m_VPMatrix * obj.getTransform();
+
+    obj.getShader().bind();
+    obj.getShader().setUniformMat4f("u_MVP", MVP);
+    obj.getShader().setUniformMat4f("u_MV", MV);
 }

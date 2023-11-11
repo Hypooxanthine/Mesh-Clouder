@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include <glm/glm.hpp>
+
 #include "Rendering/VertexArray.h"
 #include "Rendering/IndexBuffer.h"
 #include "Rendering/Shader.h"
@@ -21,8 +23,26 @@ public:
     inline const Shader& getShader() const { return *m_Shader; }
     inline Shader& getShader() { return *m_Shader; }
 
+    inline const glm::mat4& getTransform() const { return m_Transform; }
+    inline const glm::vec3& getTranslation() const { return m_Translation; }
+    inline const glm::mat4& getRotation() const { return m_Rotation; }
+    inline const glm::vec3& getScale() const { return m_Scale; }
+
+    void setTranslation(const glm::vec3& translation);
+    void setRotation(const glm::vec3& rotation);
+    void setRotation(const glm::mat4& rotation);
+    void setScale(const glm::vec3& scale);
+
+private:
+    void computeTransform();
+
 protected:
     std::unique_ptr<VertexArray> m_VertexArray = nullptr;
     std::unique_ptr<IndexBuffer> m_IndexBuffer = nullptr;
     std::unique_ptr<Shader> m_Shader = nullptr;
+
+    glm::mat4 m_Transform = glm::mat4(1.f);
+    glm::vec3 m_Translation = glm::vec3(0.f);
+    glm::mat4 m_Rotation = glm::mat4(1.f);
+    glm::vec3 m_Scale = glm::vec3(1.f);
 };
