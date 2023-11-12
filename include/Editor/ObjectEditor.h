@@ -27,14 +27,14 @@ public:
      * @brief Renders things on screen each frame.
      * 
      */
-    void render() const;
+    void render();
 
     /**
      * @brief Get the OpenGL texture id the scene was rendered on.
      * 
      * @return unsigned int The OpenGL texture id.
      */
-    inline unsigned int getDrawnSceneTextureIndex() const { return m_Texture; }
+    inline unsigned int getDrawnSceneTextureIndex() const { return m_Renderer.getRenderTextureID(); }
 
     /**
      * @brief Set the RenderMesh object
@@ -96,7 +96,6 @@ private:
 
 private:
     Renderer m_Renderer;
-    mutable unsigned int m_Texture;
 
     std::unique_ptr<RenderMesh> m_RenderMesh;
     std::unique_ptr<RenderMesh> m_BrushMesh;

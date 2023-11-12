@@ -7,9 +7,7 @@
 #include "Math/Math.h"
 
 ObjectEditor::ObjectEditor()
-{
-    GLCall(glGenTextures(1, &m_Texture));
-    
+{    
     loadDefaultCube();
     
     m_BrushMesh = std::make_unique<RenderMesh>(MeshGenerator::GenCircle(64));
@@ -20,18 +18,15 @@ ObjectEditor::ObjectEditor()
     m_CoordinateSystem->setScale(glm::vec3(50.f, 1.f, 50.f));
     m_CoordinateSystem->setTranslation(glm::vec3(-25.f, 0.f, -25.f));
 
+    m_Renderer.setViewport({0, 0}, {800, 600});
+
     computeProjection();
     computeView();
     computeMVP();
-
-    GLCall(glClearColor(0.1f, 0.1f, 0.1f, 1.f));
-    GLCall(glEnable(GL_BLEND));
-    GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 }
 
 ObjectEditor::~ObjectEditor()
 {
-    GLCall(glDeleteTextures(1, &m_Texture));
 }
 
 void ObjectEditor::loadDefaultCube()
@@ -52,49 +47,16 @@ void ObjectEditor::update()
     
 }
 
-void ObjectEditor::render() const
+void ObjectEditor::render()
 {
-    GLCall(glEnable(GL_DEPTH_TEST));
-
-    GLCall(glViewport(0, 0, m_RenderTargetSize.x, m_RenderTargetSize.y));
-
-    GLCall(glBindTexture(GL_TEXTURE_2D, m_Texture));
-
-    unsigned int fbo;
-    GLCall(glGenFramebuffers(1, &fbo));
-    GLCall(glBindFramebuffer(GL_FRAMEBUFFER, fbo));
-
-    GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_RenderTargetSize.x, m_RenderTargetSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr));
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-
-    GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_Texture, 0));
-
-    unsigned int rbo;
-    GLCall(glGenRenderbuffers(1, &rbo));
-    GLCall(glBindRenderbuffer(GL_RENDERBUFFER, rbo));
-    GLCall(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_RenderTargetSize.x, m_RenderTargetSize.y));
-    GLCall(glBindRenderbuffer(GL_RENDERBUFFER, 0));
-
-    GLCall(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo));
-
-    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-        std::cout << "Frame Buffer not complete." << std::endl;
-
-    GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+    m_Renderer.beginScene();
 
     m_Renderer.draw(*m_RenderMesh);
     if (m_ShouldRenderBrush)
         m_Renderer.draw(*m_BrushMesh);
     m_Renderer.draw(*m_CoordinateSystem);
 
-    GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-    GLCall(glBindRenderbuffer(GL_RENDERBUFFER, 0));
-    GLCall(glBindTexture(GL_TEXTURE_2D, 0));
-    GLCall(glDeleteFramebuffers(1, &fbo));
-    GLCall(glDeleteRenderbuffers(1, &rbo));
-
-    GLCall(glDisable(GL_DEPTH_TEST));
+    m_Renderer.endScene();
 }
 
 
@@ -115,6 +77,7 @@ void ObjectEditor::onWindowAspectRatioChanged(float x, float y)
 {
     m_RenderTargetSize = { x, y };
     m_AspectRatio = x / y;
+    m_Renderer.setViewportSize({x, y});
     computeProjection();
     computeMVP();
 }
