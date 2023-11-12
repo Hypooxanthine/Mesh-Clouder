@@ -6,9 +6,27 @@ in vec4 fragPos;
 
 vec2 tileSize = vec2(1.f, 1.f);
 vec2 gridSize = vec2(50.f, 50.f);
-float lineWidth = 0.01f;
+float lineWidth = 0.02f;
+vec4 xColor = vec4(0.5, 0.0, 0.0, 0.5);
+vec4 yColor = vec4(0.0, 0.5, 0.0, 0.5);
+vec4 xyColor = clamp(xColor + yColor, vec4(0.0, 0.0, 0.0, 0.0), vec4(1.0, 1.0, 1.0, 0.5));
+vec4 pColor = vec4(0.2, 0.2, 0.2, 0.5);
 
 bool IsInXLine()
+{
+    float r = fragPos.x;
+
+    return abs(r) < lineWidth;
+}
+
+bool IsInYLine()
+{
+    float r = fragPos.z;
+
+    return abs(r) < lineWidth;
+}
+
+bool IsInXParallelLine()
 {
     float r = fragPos.x;
     
@@ -20,7 +38,7 @@ bool IsInXLine()
     return abs(r) < lineWidth;
 }
 
-bool IsInYLine()
+bool IsInYParallelLine()
 {
     float r = fragPos.z;
 
@@ -34,11 +52,14 @@ bool IsInYLine()
 
 void main()
 {
-    fragColor = vec4(0.f, 0.f, 0.f, 0.f);
-
     bool x = IsInXLine();
     bool y = IsInYLine();
-    if(x) fragColor += vec4(0.5f, 0.f, 0.f, 0.f);
-    if(y) fragColor += vec4(0.f, 0.5f, 0.f, 0.f);
-    if(x || y) fragColor += vec4(0.f, 0.f, 0.f, 1.f);
+    bool xp = IsInXParallelLine();
+    bool yp = IsInYParallelLine();
+
+    if(x && y) fragColor = xyColor;
+    else if(x) fragColor = xColor;
+    else if(y) fragColor = yColor;
+    else if(xp || yp) fragColor = pColor;
+    else fragColor = vec4(0.0, 0.0, 0.0, 0.0);
 }
