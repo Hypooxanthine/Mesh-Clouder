@@ -54,12 +54,16 @@ void main()
 {
     bool x = IsInXLine();
     bool y = IsInYLine();
-    bool xp = IsInXParallelLine();
-    bool yp = IsInYParallelLine();
 
     if(x && y) fragColor = xyColor;
     else if(x) fragColor = xColor;
     else if(y) fragColor = yColor;
-    else if(xp || yp) fragColor = pColor;
-    else fragColor = vec4(0.0, 0.0, 0.0, 0.0);
+    else
+    {
+        bool xp = IsInXParallelLine();
+        bool yp = IsInYParallelLine();
+
+        if(xp ||yp) fragColor = pColor;
+        else fragColor = vec4(0.0, 0.0, 0.0, 0.0);
+    }
 }
