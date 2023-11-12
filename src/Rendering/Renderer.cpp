@@ -8,11 +8,15 @@ Renderer::Renderer()
     GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     
     GLCall(glGenTextures(1, &m_RenderTexture));
+    GLCall(glGenFramebuffers(1, &m_Fbo));
+    GLCall(glGenRenderbuffers(1, &m_Rbo));
 }
 
 Renderer::~Renderer()
 {
     GLCall(glDeleteTextures(1, &m_RenderTexture));
+    GLCall(glDeleteFramebuffers(1, &m_Fbo));
+    GLCall(glDeleteRenderbuffers(1, &m_Rbo));
 }
 
 void Renderer::beginScene()
@@ -21,7 +25,6 @@ void Renderer::beginScene()
 
     GLCall(glBindTexture(GL_TEXTURE_2D, m_RenderTexture));
 
-    GLCall(glGenFramebuffers(1, &m_Fbo));
     GLCall(glBindFramebuffer(GL_FRAMEBUFFER, m_Fbo));
 
     GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_ViewportSize.x, m_ViewportSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr));
@@ -30,7 +33,6 @@ void Renderer::beginScene()
 
     GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_RenderTexture, 0));
 
-    GLCall(glGenRenderbuffers(1, &m_Rbo));
     GLCall(glBindRenderbuffer(GL_RENDERBUFFER, m_Rbo));
     GLCall(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_ViewportSize.x, m_ViewportSize.y));
     GLCall(glBindRenderbuffer(GL_RENDERBUFFER, 0));
@@ -48,8 +50,6 @@ void Renderer::endScene()
     GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
     GLCall(glBindRenderbuffer(GL_RENDERBUFFER, 0));
     GLCall(glBindTexture(GL_TEXTURE_2D, 0));
-    GLCall(glDeleteFramebuffers(1, &m_Fbo));
-    GLCall(glDeleteRenderbuffers(1, &m_Rbo));
 }
 
 void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
