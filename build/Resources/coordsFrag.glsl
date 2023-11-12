@@ -7,10 +7,10 @@ in vec4 fragPos;
 vec2 tileSize = vec2(1.f, 1.f);
 vec2 gridSize = vec2(50.f, 50.f);
 float lineWidth = 0.02f;
-vec4 xColor = vec4(0.5, 0.0, 0.0, 0.5);
-vec4 yColor = vec4(0.0, 0.5, 0.0, 0.5);
+vec4 xColor = vec4(0.6, 0.0, 0.0, 0.5);
+vec4 yColor = vec4(0.0, 0.6, 0.0, 0.5);
 vec4 xyColor = clamp(xColor + yColor, vec4(0.0, 0.0, 0.0, 0.0), vec4(1.0, 1.0, 1.0, 0.5));
-vec4 pColor = vec4(0.2, 0.2, 0.2, 0.5);
+vec4 pColor = vec4(0.3, 0.3, 0.3, 0.5);
 
 bool IsInXLine()
 {
