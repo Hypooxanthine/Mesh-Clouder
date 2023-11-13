@@ -82,7 +82,7 @@ void ObjectEditor::onWindowAspectRatioChanged(float x, float y)
 void ObjectEditor::onUserDrag(const glm::vec2& drag)
 {
     m_ViewAzimuth -= drag.x * m_OrbitSpeed;
-    m_ViewElevation -= drag.y * m_OrbitSpeed;
+    m_ViewElevation += drag.y * m_OrbitSpeed;
 
     const float epsilon = 0.001f;
 
@@ -132,7 +132,7 @@ void ObjectEditor::onMouseMoved(float x, float y)
 void ObjectEditor::computeView()
 {
     m_CameraPos.x = m_ViewDistance * sin(glm::radians(m_ViewElevation)) * sin(glm::radians(m_ViewAzimuth));
-    m_CameraPos.y = m_ViewDistance * cos(glm::radians(m_ViewElevation));
+    m_CameraPos.y = -m_ViewDistance * cos(glm::radians(m_ViewElevation));
     m_CameraPos.z = m_ViewDistance * sin(glm::radians(m_ViewElevation)) * cos(glm::radians(m_ViewAzimuth));
     
     //m_ViewMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0.f, 0.f, -20.f));
