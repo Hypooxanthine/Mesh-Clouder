@@ -1,4 +1,4 @@
-#include "Rendering/Texture.h"
+#include "Rendering/Abstraction/Texture.h"
 
 #include "stb_image/stb_image.h"
 

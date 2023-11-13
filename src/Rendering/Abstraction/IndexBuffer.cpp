@@ -1,4 +1,4 @@
-#include "Rendering/IndexBuffer.h"
+#include "Rendering/Abstraction/IndexBuffer.h"
 
 #include "Rendering/GLCall.h"
 

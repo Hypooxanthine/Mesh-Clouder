@@ -1,12 +1,12 @@
 #include "Rendering/Objects/RenderMesh.h"
 
 #include "Data/Vertex.h"
-#include "Rendering/VertexBuffer.h"
-#include "Rendering/VertexBufferLayout.h"
+#include "Rendering/Abstraction/VertexBuffer.h"
+#include "Rendering/Abstraction/VertexBufferLayout.h"
 
 RenderMesh::RenderMesh()
 {
-    init();
+    
 }
 
 RenderMesh::RenderMesh(const RenderMesh& other)

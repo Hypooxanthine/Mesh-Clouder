@@ -4,9 +4,9 @@
 
 #include <glm/glm.hpp>
 
-#include "Rendering/VertexArray.h"
-#include "Rendering/IndexBuffer.h"
-#include "Rendering/Shader.h"
+#include "Rendering/Abstraction/VertexArray.h"
+#include "Rendering/Abstraction/IndexBuffer.h"
+#include "Rendering/Abstraction/Shader.h"
 
 class Renderer;
 

@@ -1,4 +1,4 @@
-#include "Rendering/VertexBuffer.h"
+#include "Rendering/Abstraction/VertexBuffer.h"
 
 #include "Rendering/GLCall.h"
 

@@ -1,8 +1,8 @@
-#include "Rendering/VertexArray.h"
+#include "Rendering/Abstraction/VertexArray.h"
 
 #include "Rendering/GLCall.h"
-#include "Rendering/VertexBuffer.h"
-#include "Rendering/VertexBufferLayout.h"
+#include "Rendering/Abstraction/VertexBuffer.h"
+#include "Rendering/Abstraction/VertexBufferLayout.h"
 
 VertexArray::VertexArray()
 {

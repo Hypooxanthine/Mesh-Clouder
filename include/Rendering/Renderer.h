@@ -3,16 +3,16 @@
 #include <glm/glm.hpp>
 
 #include "GLCall.h"
-#include "VertexArray.h"
-#include "VertexBuffer.h"
-#include "VertexBufferLayout.h"
-#include "IndexBuffer.h"
-#include "Shader.h"
-#include "Objects/RenderObject.h"
+#include "Rendering/Abstraction/VertexArray.h"
+#include "Rendering/Abstraction/VertexBuffer.h"
+#include "Rendering/Abstraction/VertexBufferLayout.h"
+#include "Rendering/Abstraction/IndexBuffer.h"
+#include "Rendering/Abstraction/Shader.h"
+#include "Rendering/Objects/RenderObject.h"
 
 /**
  * @brief Draws things with OpenGL.
- * 
+Rendering/Abstraction/
  */
 class Renderer
 {

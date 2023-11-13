@@ -70,17 +70,17 @@ set(PROJECT_IMPL
     ${SOURCE_DIR}/ExternalData/ObjectLoader.cpp
     ${SOURCE_DIR}/ExternalData/FileExplorer_Unix.cpp
     ${SOURCE_DIR}/ExternalData/FileExplorer_Windows.cpp
-    ${SOURCE_DIR}/Rendering/IndexBuffer.cpp
     ${SOURCE_DIR}/Rendering/Renderer.cpp
-    ${SOURCE_DIR}/Rendering/Shader.cpp
-    ${SOURCE_DIR}/Rendering/Texture.cpp
-    ${SOURCE_DIR}/Rendering/VertexArray.cpp
-    ${SOURCE_DIR}/Rendering/VertexBuffer.cpp
+    ${SOURCE_DIR}/Rendering/Abstraction/IndexBuffer.cpp
+    ${SOURCE_DIR}/Rendering/Abstraction/Shader.cpp
+    ${SOURCE_DIR}/Rendering/Abstraction/Texture.cpp
+    ${SOURCE_DIR}/Rendering/Abstraction/VertexArray.cpp
+    ${SOURCE_DIR}/Rendering/Abstraction/VertexBuffer.cpp
+    ${SOURCE_DIR}/Rendering/Abstraction/VertexBufferLayout.cpp
     ${SOURCE_DIR}/Rendering/Objects/RenderObject.cpp
     ${SOURCE_DIR}/Rendering/Objects/RenderMesh.cpp
     ${SOURCE_DIR}/Rendering/Objects/RenderGrid.cpp
     ${SOURCE_DIR}/Rendering/Objects/MeshGenerator.cpp
-    ${SOURCE_DIR}/Rendering/VertexBufferLayout.cpp
     ${SOURCE_DIR}/Editor/ObjectEditor.cpp
     ${SOURCE_DIR}/Math/Math.cpp
 )
