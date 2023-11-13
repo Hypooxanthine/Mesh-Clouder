@@ -16,38 +16,28 @@ bool IsInXLine()
 {
     float r = fragPos.x;
 
-    return abs(r) < lineWidth;
+    return abs(r) < lineWidth; // Main axis are twice as thick
 }
 
 bool IsInYLine()
 {
     float r = fragPos.z;
 
-    return abs(r) < lineWidth;
+    return abs(r) < lineWidth; // Main axis are twice as thick
 }
 
 bool IsInXParallelLine()
 {
-    float r = fragPos.x;
-    
-    if(r > 0)
-        while(r - tileSize.x > 0) r -= tileSize.x;
-    else
-        while(r + tileSize.x < 0) r += tileSize.x;
+    float r = mod(abs(fragPos.x) + lineWidth / 2.0, tileSize.x); // Positive
 
-    return abs(r) < lineWidth;
+    return r < lineWidth;
 }
 
 bool IsInYParallelLine()
 {
-    float r = fragPos.z;
+    float r = mod(abs(fragPos.z) + lineWidth / 2.0, tileSize.y); // Positive
 
-    if(r > 0)
-        while(r - tileSize.y > 0) r -= tileSize.y;
-    else
-        while(r + tileSize.y < 0) r += tileSize.y;
-
-    return abs(r) < lineWidth;
+    return r < lineWidth;
 }
 
 void main()
@@ -63,7 +53,7 @@ void main()
         bool xp = IsInXParallelLine();
         bool yp = IsInYParallelLine();
 
-        if(xp ||yp) fragColor = pColor;
+        if(xp || yp) fragColor = pColor;
         else fragColor = vec4(0.0, 0.0, 0.0, 0.0);
     }
 }
