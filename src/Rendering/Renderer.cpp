@@ -63,7 +63,7 @@ void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& 
 
 void Renderer::draw(const RenderObject& object) const
 {
-    draw(object.getVertexArray(), object.getIndexBuffer(), object.getShader());
+    object.render(*this);
 }
 
 void Renderer::setViewport(const glm::vec<2, unsigned int>& o, const glm::vec<2, unsigned int>& s)
