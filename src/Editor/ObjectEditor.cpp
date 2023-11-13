@@ -13,10 +13,7 @@ ObjectEditor::ObjectEditor()
     m_BrushMesh = std::make_unique<RenderMesh>(MeshGenerator::GenCircle(64));
     m_BrushMesh->getShader().loadFromFile("Resources/brushVert.glsl", "Resources/brushFrag.glsl");
 
-    m_CoordinateSystem = std::make_unique<RenderMesh>(MeshGenerator::GenQuad());
-    m_CoordinateSystem->getShader().loadFromFile("Resources/coordsVert.glsl", "Resources/coordsFrag.glsl");
-    m_CoordinateSystem->setScale(glm::vec3(50.f, 1.f, 50.f));
-    m_CoordinateSystem->setTranslation(glm::vec3(-25.f, 0.f, -25.f));
+    m_CoordinateSystem = std::make_unique<RenderGrid>(glm::vec2{50.f, 50.f}, glm::vec2{1.f, 1.f});
 
     m_Renderer.setViewport({0, 0}, {800, 600});
 
@@ -90,8 +87,8 @@ void ObjectEditor::onUserDrag(const glm::vec2& drag)
     const float epsilon = 0.001f;
 
     while (m_ViewAzimuth > 360.f) m_ViewAzimuth -= 360.f;
-    if (m_ViewElevation > 180.f) m_ViewElevation = 180.f - epsilon;
-    else if (m_ViewElevation < 0.f) m_ViewElevation = epsilon;
+    while (m_ViewAzimuth < 0.f) m_ViewAzimuth += 360.f;
+    m_ViewElevation = glm::clamp(m_ViewElevation, epsilon, 180.f - epsilon);
 
     computeView();
     computeMVP();

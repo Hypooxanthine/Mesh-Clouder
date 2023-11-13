@@ -4,6 +4,11 @@
 #include "Rendering/VertexBuffer.h"
 #include "Rendering/VertexBufferLayout.h"
 
+RenderMesh::RenderMesh()
+{
+    init();
+}
+
 RenderMesh::RenderMesh(const RenderMesh& other)
 {
     *this = other;
@@ -46,6 +51,17 @@ RenderMesh& RenderMesh::operator=(RenderMesh&& other)
     return *this;
 }
 
+void RenderMesh::setMesh(const Mesh& mesh)
+{
+    m_MeshData = mesh;
+    init();
+}
+
+void RenderMesh::setMesh(Mesh&& mesh)
+{
+    m_MeshData = std::move(mesh);
+    init();
+}
 
 void RenderMesh::init()
 {

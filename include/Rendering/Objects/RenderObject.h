@@ -8,6 +8,8 @@
 #include "Rendering/IndexBuffer.h"
 #include "Rendering/Shader.h"
 
+class Renderer;
+
 /**
  * @brief A RenderObject represents an object that can be drawn by the @ref Renderer.
  * 
@@ -16,7 +18,9 @@ class RenderObject
 {
 public:
     RenderObject();
-    ~RenderObject() = default;
+    virtual ~RenderObject() = default;
+
+    void render(const Renderer& renderer) const;
 
     inline const VertexArray& getVertexArray() const { return *m_VertexArray; }
     inline const IndexBuffer& getIndexBuffer() const { return *m_IndexBuffer; }

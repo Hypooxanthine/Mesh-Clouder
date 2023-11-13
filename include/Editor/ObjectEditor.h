@@ -4,6 +4,7 @@
 
 #include "Rendering/Renderer.h"
 #include "Rendering/Objects/RenderMesh.h"
+#include "Rendering/Objects/RenderGrid.h"
 
 #include "glm/glm.hpp"
 
@@ -99,7 +100,7 @@ private:
 
     std::unique_ptr<RenderMesh> m_RenderMesh;
     std::unique_ptr<RenderMesh> m_BrushMesh;
-    std::unique_ptr<RenderMesh> m_CoordinateSystem;
+    std::unique_ptr<RenderGrid> m_CoordinateSystem;
     bool m_ShouldRenderBrush = false;
 
     // Controls
@@ -114,8 +115,8 @@ private:
     glm::mat4 m_ViewMatrix, m_ProjMatrix;
 
     // View
-    float m_ViewAzimuth = 0.f;
-    float m_ViewElevation = 90.f;
+    float m_ViewAzimuth = -45.f;
+    float m_ViewElevation = 135.f;
     float m_ViewDistance = 20.f;
 
     // Projection

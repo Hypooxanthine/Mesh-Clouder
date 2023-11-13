@@ -1,10 +1,17 @@
 #include "Rendering/Objects/RenderObject.h"
 
+#include "Rendering/Renderer.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 RenderObject::RenderObject()
 {
     
+}
+
+void RenderObject::render(const Renderer& renderer) const
+{
+    renderer.draw(getVertexArray(), getIndexBuffer(), getShader());
 }
 
 void RenderObject::setTranslation(const glm::vec3& translation)
@@ -18,6 +25,7 @@ void RenderObject::setRotation(const glm::vec3& rotation)
     glm::mat4 rotationX = glm::rotate(glm::mat4(1.f), rotation.x, glm::vec3(1.f, 0.f, 0.f));
     glm::mat4 rotationY = glm::rotate(glm::mat4(1.f), rotation.y, glm::vec3(0.f, 1.f, 0.f));
     glm::mat4 rotationZ = glm::rotate(glm::mat4(1.f), rotation.z, glm::vec3(0.f, 0.f, 1.f));
+    m_Rotation = rotationZ * rotationY * rotationX;
     computeTransform();
 }
 
