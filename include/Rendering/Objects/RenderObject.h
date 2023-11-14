@@ -4,6 +4,7 @@
 
 #include <glm/glm.hpp>
 
+#include "Rendering/Objects/Camera.h"
 #include "Rendering/Abstraction/VertexArray.h"
 #include "Rendering/Abstraction/IndexBuffer.h"
 #include "Rendering/Abstraction/Shader.h"
@@ -20,7 +21,7 @@ public:
     RenderObject();
     virtual ~RenderObject() = default;
 
-    void render(const Renderer& renderer) const;
+    void render(const Renderer& renderer, const Camera& camera) const;
 
     inline const VertexArray& getVertexArray() const { return *m_VertexArray; }
     inline const IndexBuffer& getIndexBuffer() const { return *m_IndexBuffer; }

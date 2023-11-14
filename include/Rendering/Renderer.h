@@ -8,7 +8,9 @@
 #include "Rendering/Abstraction/VertexBufferLayout.h"
 #include "Rendering/Abstraction/IndexBuffer.h"
 #include "Rendering/Abstraction/Shader.h"
-#include "Rendering/Objects/RenderObject.h"
+
+class RenderObject;
+class Camera;
 
 /**
  * @brief Draws things with OpenGL.
@@ -47,7 +49,7 @@ public:
 	 * 
 	 * @param object RenderObject instance.
 	 */
-	void draw(const RenderObject& object) const;
+	void draw(const RenderObject& object, const Camera& camera) const;
 
 	void setViewport(const glm::vec<2, unsigned int>& o, const glm::vec<2, unsigned int>& s);
 	void setViewportOrigin(const glm::vec<2, unsigned int>& o);

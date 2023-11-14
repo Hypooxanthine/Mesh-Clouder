@@ -85,11 +85,6 @@ public:
 private:
     void loadDefaultCube();
 
-    /// @brief Compute MVP (for vertices) and MV (for normals) matrices from model, view and projection matrices and updates shaders uniforms.
-    void updateRenderObjectsMatrices();
-
-    void updateRenderObjectMatrices(RenderObject& obj);
-
 private:
     Renderer m_Renderer;
 

@@ -1,5 +1,8 @@
 #include "Rendering/Renderer.h"
 
+#include "Rendering/Objects/RenderObject.h"
+#include "Rendering/Objects/Camera.h"
+
 Renderer::Renderer()
 {
     GLCall(glClearColor(0.1f, 0.1f, 0.1f, 1.f));
@@ -54,16 +57,18 @@ void Renderer::endScene()
 
 void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
 {
-    // Drawing data
+    // Binding data
     va.bind();
     ib.bind();
     shader.bind();
+
+    // Drawing data
     GLCall(glDrawElements(GL_TRIANGLES, (GLsizei)ib.getCount(), GL_UNSIGNED_INT, nullptr));
 }
 
-void Renderer::draw(const RenderObject& object) const
+void Renderer::draw(const RenderObject& object, const Camera& camera) const
 {
-    object.render(*this);
+    object.render(*this, camera);
 }
 
 void Renderer::setViewport(const glm::vec<2, unsigned int>& o, const glm::vec<2, unsigned int>& s)

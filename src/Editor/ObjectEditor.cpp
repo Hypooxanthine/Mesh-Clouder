@@ -18,8 +18,6 @@ ObjectEditor::ObjectEditor()
     m_CoordinateSystem = std::make_unique<RenderGrid>(glm::vec2{50.f, 50.f}, glm::vec2{1.f, 1.f});
 
     m_Renderer.setViewport({0, 0}, {800, 600});
-
-    updateRenderObjectsMatrices();
 }
 
 ObjectEditor::~ObjectEditor()
@@ -48,10 +46,10 @@ void ObjectEditor::render()
 {
     m_Renderer.beginScene();
 
-    m_Renderer.draw(*m_RenderMesh);
+    m_Renderer.draw(*m_RenderMesh, m_Camera);
     if (m_ShouldRenderBrush)
-        m_Renderer.draw(*m_BrushMesh);
-    m_Renderer.draw(*m_CoordinateSystem);
+        m_Renderer.draw(*m_BrushMesh, m_Camera);
+    m_Renderer.draw(*m_CoordinateSystem, m_Camera);
 
     m_Renderer.endScene();
 }
@@ -60,14 +58,12 @@ void ObjectEditor::render()
 void ObjectEditor::setRenderMesh(const RenderMesh& rm)
 {
     m_RenderMesh = std::make_unique<RenderMesh>(rm);
-    updateRenderObjectsMatrices();
 }
 
 void ObjectEditor::setRenderMesh(RenderMesh&& rm)
 {
     m_RenderMesh = std::make_unique<RenderMesh>(std::move(rm));
     m_RenderMesh->getShader().loadFromFile("Resources/meshVert.glsl", "Resources/meshFrag.glsl");
-    updateRenderObjectsMatrices();
 }
 
 void ObjectEditor::onWindowAspectRatioChanged(float x, float y)
@@ -75,20 +71,17 @@ void ObjectEditor::onWindowAspectRatioChanged(float x, float y)
     m_RenderTargetSize = { x, y };
     m_Renderer.setViewportSize({x, y});
     m_Camera.setAspectRatio(x / y);
-    updateRenderObjectsMatrices();
 }
 
 void ObjectEditor::onUserDrag(const glm::vec2& drag)
 {
     m_Camera.setViewAzimuth(m_Camera.getViewAzimuth() - drag.x * m_OrbitSpeed);
     m_Camera.setViewElevation(m_Camera.getViewElevation() + drag.y * m_OrbitSpeed);
-    updateRenderObjectsMatrices();
 }
 
 void ObjectEditor::onUserZoom(float value)
 {
     m_Camera.setViewDistance(m_Camera.getViewDistance() - value * m_ZoomSpeed);
-    updateRenderObjectsMatrices();
 }
 
 void ObjectEditor::onMouseMoved(float x, float y)
@@ -112,29 +105,4 @@ void ObjectEditor::onMouseMoved(float x, float y)
     m_ShouldRenderBrush = true;
     m_BrushMesh->setTranslation(res.position + res.normal * 0.001f);
     m_BrushMesh->setRotation(Math::AlignVectors(m_BrushMesh->getMeshData().getVertices()[0].normal, res.normal));
-
-    updateRenderObjectMatrices(*m_BrushMesh);
-}
-
-void ObjectEditor::updateRenderObjectsMatrices()
-{
-    if (m_RenderMesh)
-        updateRenderObjectMatrices(*m_RenderMesh);
-
-    if (m_BrushMesh)
-        updateRenderObjectMatrices(*m_BrushMesh);
-
-    if (m_CoordinateSystem)
-        updateRenderObjectMatrices(*m_CoordinateSystem);
-}
-
-void ObjectEditor::updateRenderObjectMatrices(RenderObject& obj)
-{
-    glm::mat4 MV = m_Camera.getViewTransform() * obj.getTransform();
-    glm::mat4 MVP = m_Camera.getTransform() * obj.getTransform();
-
-    obj.getShader().bind();
-    obj.getShader().setUniformMat4f("u_MVP", MVP);
-    obj.getShader().setUniformMat4f("u_MV", MV);
-    obj.getShader().setUniformMat4f("u_P", obj.getTransform());
 }
