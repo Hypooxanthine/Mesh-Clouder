@@ -84,6 +84,7 @@ set(PROJECT_IMPL
     ${SOURCE_DIR}/Rendering/Objects/MeshGenerator.cpp
     ${SOURCE_DIR}/Editor/ObjectEditor.cpp
     ${SOURCE_DIR}/Math/Math.cpp
+    ${SOURCE_DIR}/Math/PointCloudProcessor.cpp
 )
 
 set(SOURCES
