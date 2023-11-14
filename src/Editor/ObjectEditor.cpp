@@ -103,6 +103,6 @@ void ObjectEditor::onMouseMoved(float x, float y)
     }
 
     m_ShouldRenderBrush = true;
-    m_BrushMesh->setTranslation(res.position + res.normal * 0.001f);
+    m_BrushMesh->setTranslation(res.position + res.normal * 0.0001f * m_Camera.getViewDistance());
     m_BrushMesh->setRotation(Math::AlignVectors(m_BrushMesh->getMeshData().getVertices()[0].normal, res.normal));
 }

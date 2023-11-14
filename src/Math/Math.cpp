@@ -68,7 +68,6 @@ HitResult Math::RayCastWithMesh(const Ray& ray, const Mesh& mesh)
         glm::vec3 cp3 = glm::cross(A-C, P-C);
 
         if(!AreVectorsOfSameDirection(cp2, cp3)) continue;
-        //if(!AreVectorsOfSameDirection(cp3, cp1)) continue;
 
         // Ray intersected triangle.
 
@@ -77,8 +76,6 @@ HitResult Math::RayCastWithMesh(const Ray& ray, const Mesh& mesh)
         out.normal = glm::normalize(n);
         out.position = P;
     }
-
-    if(out.hasHit) std::cout << "Collision\n";
 
     return out;
 }
@@ -90,9 +87,13 @@ bool Math::AreVectorsOfSameDirection(const glm::vec3& u, const glm::vec3& v)
 
 glm::mat4 Math::AlignVectors(const glm::vec3& from, const glm::vec3& to)
 {
+    glm::vec3 n = glm::cross(from, to);
+    // If "from" and "to" are colinear, n will be the null vector. We need to check that. No rotation is needed in this case because vectors are already aligned, so we return identity matrix.
+    if(glm::dot(n, n) < 0.0001f) return glm::mat4(1.f);
+
     float angle = glm::acos(glm::dot(from, to) / (glm::length(from) * glm::length(to)));
 
-    glm::vec3 n = glm::cross(from, to);
+    n = glm::normalize(n);
 
     glm::mat4 mat = glm::rotate(glm::mat4(1.f), angle, n);
 
