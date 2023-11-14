@@ -1,7 +1,6 @@
 #include "Rendering/Objects/Camera.h"
 
 #include <stdexcept>
-#include <iostream>
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -175,7 +174,6 @@ void Camera::setFOV(float fov)
 void Camera::setAspectRatio(float aspectRatio)
 {
     m_AspectRatio = aspectRatio;
-    std::cout << "New aspect ratio: " << m_AspectRatio << ".\n";
 
     requestComputeProjection();
 }
@@ -195,14 +193,12 @@ void Camera::setFarClip(float fclip)
 
 void Camera::computeTransform() const
 {
-    std::cout << "Computing view-projection.\n";
     m_Transform = getProjectionTransform() * getViewTransform();
     m_ShouldComputeTransform = false;
 }
 
 void Camera::computeViewTransform() const
 {
-    std::cout << "Computing view.\n";
     // When using orbiting, we get the whole view transform from glm::lookAt. That's why we need to "remove" translation from it in getRotation()
     if(isUsingOrbiting())
     {
@@ -222,7 +218,6 @@ void Camera::computeViewTransform() const
 
 void Camera::computeProjectionTransform() const
 {
-    std::cout << "Computing projection.\n";
     m_ProjectionTransform = glm::perspective(m_Fov, m_AspectRatio, m_NearClip, m_FarClip);
     m_ShouldCumputeProjectionTransform = false;
 }
