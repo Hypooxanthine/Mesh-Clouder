@@ -1,6 +1,7 @@
-#include "Editor/Camera.h"
+#include "Rendering/Objects/Camera.h"
 
 #include <stdexcept>
+#include <iostream>
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -10,6 +11,8 @@ const glm::vec3 Rotation::Z_AXIS = glm::vec3(0.f, 0.f, 1.f);
 
 Camera::Camera()
 {
+    requestComputeView();
+    requestComputeProjection();
 }
 
 const glm::mat4 &Camera::getTransform() const
@@ -127,6 +130,13 @@ void Camera::setIsUsingOrbiting(bool val)
 void Camera::setViewAzimuth(float azimuth)
 {
     m_ViewAzimuth = azimuth;
+
+    static const float epsilon = 0.001f;
+
+    while (m_ViewAzimuth > 360.f) m_ViewAzimuth -= 360.f;
+    while (m_ViewAzimuth < 0.f) m_ViewAzimuth += 360.f;
+    m_ViewElevation = glm::clamp(m_ViewElevation, epsilon, 180.f - epsilon);
+
     // We allow changing this while not using orbiting but there is no point computing view again because azimtuh won't be used in computation anyway.
     if(isUsingOrbiting())
         requestComputeView();
@@ -165,6 +175,8 @@ void Camera::setFOV(float fov)
 void Camera::setAspectRatio(float aspectRatio)
 {
     m_AspectRatio = aspectRatio;
+    std::cout << "New aspect ratio: " << m_AspectRatio << ".\n";
+
     requestComputeProjection();
 }
 
@@ -183,12 +195,14 @@ void Camera::setFarClip(float fclip)
 
 void Camera::computeTransform() const
 {
+    std::cout << "Computing view-projection.\n";
     m_Transform = getProjectionTransform() * getViewTransform();
     m_ShouldComputeTransform = false;
 }
 
 void Camera::computeViewTransform() const
 {
+    std::cout << "Computing view.\n";
     // When using orbiting, we get the whole view transform from glm::lookAt. That's why we need to "remove" translation from it in getRotation()
     if(isUsingOrbiting())
     {
@@ -208,6 +222,7 @@ void Camera::computeViewTransform() const
 
 void Camera::computeProjectionTransform() const
 {
+    std::cout << "Computing projection.\n";
     m_ProjectionTransform = glm::perspective(m_Fov, m_AspectRatio, m_NearClip, m_FarClip);
     m_ShouldCumputeProjectionTransform = false;
 }

@@ -2,11 +2,12 @@
 
 #include <memory>
 
+#include <glm/glm.hpp>
+
 #include "Rendering/Renderer.h"
+#include "Rendering/Objects/Camera.h"
 #include "Rendering/Objects/RenderMesh.h"
 #include "Rendering/Objects/RenderGrid.h"
-
-#include "glm/glm.hpp"
 
 /**
  * @brief ObjectEditor class is used to render viewport scene.
@@ -84,14 +85,8 @@ public:
 private:
     void loadDefaultCube();
 
-    /// @brief Computes view matrix from attribute parameters (azimuth, elevation, view distance).
-    void computeView();
-
-    /// @brief Computes projection matrix from attribute parameters (fov, aspect ratio, near clip, far clip).
-    void computeProjection();
-
     /// @brief Compute MVP (for vertices) and MV (for normals) matrices from model, view and projection matrices and updates shaders uniforms.
-    void computeMVP();
+    void updateRenderObjectsMatrices();
 
     void updateRenderObjectMatrices(RenderObject& obj);
 
@@ -110,19 +105,6 @@ private:
     // Context
     glm::vec2 m_RenderTargetSize = { 800, 600 };
 
-    // MVP model
-    glm::mat4 m_VPMatrix;
-    glm::mat4 m_ViewMatrix, m_ProjMatrix;
-
-    // View
-    float m_ViewAzimuth = -45.f;
-    float m_ViewElevation = 135.f;
-    float m_ViewDistance = 20.f;
-
-    // Projection
-    glm::vec3 m_CameraPos;
-    float m_Fov = 45.f; // In degrees
-    float m_AspectRatio = 800.f / 600.f;
-    float m_NearClip = 0.1f;
-    float m_FarClip = 10000.f;
+    // Camera
+    Camera m_Camera;
 };

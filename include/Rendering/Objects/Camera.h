@@ -14,16 +14,39 @@ class Camera
 public:
     Camera();
 
+    /**
+     * @brief Get the Transform matrix of camera. It includes view & projection.
+     * 
+     * @return const glm::mat4& Transform matrix = projection * view.
+     */
     const glm::mat4& getTransform() const;
+
+    /**
+     * @brief Get the View Transform matrix of camera.
+     * 
+     * @return const glm::mat4& View matrix.
+     */
     const glm::mat4& getViewTransform() const;
+
+    /**
+     * @brief Get the Projection Transform matrix of camera.
+     * 
+     * @return const glm::mat4& Projection matrix.
+     */
     const glm::mat4& getProjectionTransform() const;
+
+    /**
+     * @brief Get the position of the camera.
+     * 
+     * @return const glm::vec3& Position vector.
+     */
     const glm::vec3& getTranslation() const;
 
     /**
-     * @brief Get the Rotation of the camera.
+     * @brief Get the Rotation matrix of the camera.
      * @warning When using orbiting, rotation computation is slower because it is recovered back from view transform (containing rotation and translation) and view translation.
      * 
-     * @return const glm::mat4& 
+     * @return const glm::mat4& Rotation matrix.
      */
     const glm::mat4& getRotation() const;
     bool  isUsingOrbiting() const;
@@ -88,7 +111,7 @@ private:
         float m_ViewAzimuth = -45.f;
         float m_ViewElevation = 135.f;
         float m_ViewDistance = 20.f;
-        glm::vec3 m_ViewFocus;
+        glm::vec3 m_ViewFocus = glm::vec3(0.f, 0.f, 0.f);
 
     // Projection
     float m_Fov = 45.f; // In degrees
