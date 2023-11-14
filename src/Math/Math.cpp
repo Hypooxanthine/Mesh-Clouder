@@ -68,7 +68,7 @@ HitResult Math::RayCastWithMesh(const Ray& ray, const Mesh& mesh)
         glm::vec3 cp3 = glm::cross(A-C, P-C);
 
         if(!AreVectorsOfSameDirection(cp2, cp3)) continue;
-        if(!AreVectorsOfSameDirection(cp3, cp1)) continue;
+        //if(!AreVectorsOfSameDirection(cp3, cp1)) continue;
 
         // Ray intersected triangle.
 
@@ -78,12 +78,14 @@ HitResult Math::RayCastWithMesh(const Ray& ray, const Mesh& mesh)
         out.position = P;
     }
 
+    if(out.hasHit) std::cout << "Collision\n";
+
     return out;
 }
 
 bool Math::AreVectorsOfSameDirection(const glm::vec3& u, const glm::vec3& v)
 {
-    return v.x / u.x > 0.f;
+    return glm::dot(u, v) >= 0.f;
 }
 
 glm::mat4 Math::AlignVectors(const glm::vec3& from, const glm::vec3& to)
