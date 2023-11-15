@@ -47,8 +47,10 @@ void ObjectEditor::render()
 {
     m_Renderer.beginScene();
 
-    //m_Renderer.draw(*m_RenderMesh, m_Camera);
-    m_Renderer.draw(*m_RenderPointCloud, m_Camera);
+    if(m_ShouldRenderMesh)
+        m_Renderer.draw(*m_RenderMesh, m_Camera);
+    if(m_ShouldRenderPointCloud)
+        m_Renderer.draw(*m_RenderPointCloud, m_Camera);
     if (m_ShouldRenderBrush)
         m_Renderer.draw(*m_BrushMesh, m_Camera);
     m_Renderer.draw(*m_CoordinateSystem, m_Camera);
@@ -67,6 +69,16 @@ void ObjectEditor::setRenderMesh(Mesh&& m)
 {
     m_RenderMesh->setMesh(std::move(m));
     m_RenderPointCloud->setPointCloud(m_Processor.process(m_RenderMesh->getMeshData()));
+}
+
+void ObjectEditor::setShouldRenderMesh(bool val)
+{
+    m_ShouldRenderMesh = val;
+}
+
+void ObjectEditor::setShouldRenderPointCloud(bool val)
+{
+    m_ShouldRenderPointCloud = val;
 }
 
 void ObjectEditor::onWindowAspectRatioChanged(float x, float y)

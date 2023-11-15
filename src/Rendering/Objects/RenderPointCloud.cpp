@@ -8,7 +8,7 @@
 RenderPointCloud::RenderPointCloud()
 {
     m_Shader = std::make_unique<Shader>();
-    m_Shader->loadFromFile("Resources/pointCloudVert.glsl", "Resources/pointCloudFrag.glsl", "Resources/pointCloudGeom.glsl");
+    m_Shader->loadFromFile("Resources/pointCloudVert.glsl", "Resources/pointCloudFrag.glsl");
 }
 
 RenderPointCloud::~RenderPointCloud()

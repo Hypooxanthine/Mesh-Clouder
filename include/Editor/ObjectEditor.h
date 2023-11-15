@@ -55,6 +55,20 @@ public:
     void setRenderMesh(Mesh&& m);
 
     /**
+     * @brief Set mesh render status.
+     * 
+     * @param val True to render the mesh, false otherwise.
+     */
+    void setShouldRenderMesh(bool val);
+
+    /**
+     * @brief Set point cloud render status.
+     * 
+     * @param val True to render the point cloud, false otherwise.
+     */
+    void setShouldRenderPointCloud(bool val);
+
+    /**
      * @brief Has to be triggered when viewport was resized.
      * 
      * @param x New viewport width.
@@ -98,6 +112,8 @@ private:
     std::unique_ptr<RenderMesh> m_BrushMesh;
     std::unique_ptr<RenderGrid> m_CoordinateSystem;
     bool m_ShouldRenderBrush = false;
+    bool m_ShouldRenderMesh = true;
+    bool m_ShouldRenderPointCloud = false;
 
     // Camera
     Camera m_Camera;

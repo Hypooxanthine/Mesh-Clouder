@@ -77,7 +77,11 @@ void MainState::renderImGui()
         ImGui::Text("View:");
         ImGui::SameLine();
         const char* viewItems[] = { "Mesh", "Point cloud", "Both" };
-        ImGui::Combo("##ViewComboLabel", &m_SelectedView, viewItems, IM_ARRAYSIZE(viewItems));
+        if(ImGui::Combo("##ViewComboLabel", &m_SelectedView, viewItems, IM_ARRAYSIZE(viewItems)))
+        {
+            m_ObjectEditor.setShouldRenderMesh(m_SelectedView == 0 || m_SelectedView == 2);
+            m_ObjectEditor.setShouldRenderPointCloud(m_SelectedView == 1 || m_SelectedView == 2);
+        }
         ImGui::Checkbox("Real time point cloud processing", &m_RealTimePointCloudGeneration);
     ImGui::End();
 
