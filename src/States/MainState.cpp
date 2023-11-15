@@ -49,10 +49,9 @@ void MainState::renderImGui()
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
         if (ImGui::BeginMenuBar())
         {
-            if (ImGui::BeginMenu("Options"))
+            if (ImGui::BeginMenu("File"))
             {
-                if (ImGui::MenuItem("Import Mesh", nullptr, false))
-                    m_ShouldImportMesh = true;
+                ImGui::MenuItem("Import Mesh", nullptr, &m_ShouldImportMesh);
 
                 ImGui::EndMenu();
             }
@@ -74,7 +73,18 @@ void MainState::renderImGui()
     ImGui::End();
     ImGui::PopStyleVar(2);
 
-    ImGui::Begin("Properties");
+    ImGui::Begin("Settings");
+        ImGui::Text("%s", "View:");
+        ImGui::SameLine();
+        const char* viewItems[] = { "Mesh", "Point cloud", "Both" };
+        ImGui::Combo("##ViewComboLabel", &m_SelectedView, viewItems, IM_ARRAYSIZE(viewItems));
+        ImGui::Checkbox("Real time point cloud processing", &m_RealTimePointCloudGeneration);
+    ImGui::End();
+
+    ImGui::Begin("Actions");
+        if(m_RealTimePointCloudGeneration) ImGui::BeginDisabled();
+            ImGui::Button("Process point cloud");
+        if(m_RealTimePointCloudGeneration) ImGui::EndDisabled();
     ImGui::End();
 }
 

@@ -42,6 +42,8 @@ private:
 
     bool m_ShouldImportMesh = false;
     bool m_MeshLoaded = false;
+    bool m_RealTimePointCloudGeneration = true;
+    int m_SelectedView = 0;
 
     ImVec2 m_PreviousViewportSize;
     ImVec2 m_PreviousMousePos;
