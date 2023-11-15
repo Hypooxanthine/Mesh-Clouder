@@ -74,7 +74,7 @@ void MainState::renderImGui()
     ImGui::PopStyleVar(2);
 
     ImGui::Begin("Settings");
-        ImGui::Text("%s", "View:");
+        ImGui::Text("View:");
         ImGui::SameLine();
         const char* viewItems[] = { "Mesh", "Point cloud", "Both" };
         ImGui::Combo("##ViewComboLabel", &m_SelectedView, viewItems, IM_ARRAYSIZE(viewItems));
