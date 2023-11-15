@@ -95,7 +95,6 @@ void MainState::importMesh()
     {
         Mesh mesh = ObjectLoader::LoadMesh();
         m_ObjectEditor.setRenderMesh(std::move(mesh));
-        m_MeshLoaded = true;
         std::cout << "Mesh loaded.\n";
     }
     catch (std::exception& e)

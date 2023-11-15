@@ -7,7 +7,9 @@
 #include "Rendering/Renderer.h"
 #include "Rendering/Objects/Camera.h"
 #include "Rendering/Objects/RenderMesh.h"
+#include "Rendering/Objects/RenderPointCloud.h"
 #include "Rendering/Objects/RenderGrid.h"
+#include "Math/PointCloudProcessor.h"
 
 /**
  * @brief ObjectEditor class is used to render viewport scene.
@@ -43,14 +45,14 @@ public:
      * 
      * @param rm 
      */
-    void setRenderMesh(const RenderMesh& rm);
+    void setRenderMesh(const Mesh& m);
 
     /**
      * @brief Set the Render Meshobject
      * 
      * @param rm 
      */
-    void setRenderMesh(RenderMesh&& rm);
+    void setRenderMesh(Mesh&& m);
 
     /**
      * @brief Has to be triggered when viewport was resized.
@@ -86,20 +88,27 @@ private:
     void loadDefaultCube();
 
 private:
+    /* Rendering */
     Renderer m_Renderer;
 
+    /* Scene */
+    // Objects
     std::unique_ptr<RenderMesh> m_RenderMesh;
+    std::unique_ptr<RenderPointCloud> m_RenderPointCloud;
     std::unique_ptr<RenderMesh> m_BrushMesh;
     std::unique_ptr<RenderGrid> m_CoordinateSystem;
     bool m_ShouldRenderBrush = false;
 
-    // Controls
+    // Camera
+    Camera m_Camera;
+
+    /* Editing */
+    PointCloudProcessor m_Processor;
+
+    /* Controls */
     float m_OrbitSpeed = 0.5f;
     float m_ZoomSpeed = 1.f;
 
-    // Context
+    /* Context */
     glm::vec2 m_RenderTargetSize = { 800, 600 };
-
-    // Camera
-    Camera m_Camera;
 };

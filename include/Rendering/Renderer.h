@@ -36,13 +36,21 @@ public:
 	void endScene();
 
 	/**
-	 * @brief Performs a draw call with OpenGL using a @ref VertexArray, an @ref IndexBuffer and a @ref Shader.
+	 * @brief Performs a draw call of triangles with OpenGL using a @ref VertexArray, an @ref IndexBuffer and a @ref Shader.
 	 * 
 	 * @param va VertexArray instance.
 	 * @param ib IndexBuffer instance.
 	 * @param shader Shader instance.
 	 */
-	void draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
+	void drawTriangles(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
+
+	/**
+	 * @brief Performs a draw call of points with OpenGL using a @ref VertexArray, an @ref IndexBuffer and a @ref Shader.
+	 * 
+	 * @param va 
+	 * @param shader 
+	 */
+	void drawPoints(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
 
 	/**
 	 * @brief Performs a draw call with OpenGL using a @ref RenderObject.

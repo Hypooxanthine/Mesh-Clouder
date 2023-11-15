@@ -29,11 +29,16 @@ public:
 
     void reservePoints(size_t count);
 
+    size_t getPointsCount() const;
     const std::vector<Element>& getPointsData() const;
     const Element* getRawPointsData() const;
+    size_t getIndicesCount() const;
+    const std::vector<unsigned int>& getIndicesData() const;
+    const unsigned int* getRawIndicesData() const;
 
     void addPoint(const Element& element);
 
 private:
     std::vector<Element> m_PointsPositions;
+    std::vector<unsigned int> m_Indices;
 };

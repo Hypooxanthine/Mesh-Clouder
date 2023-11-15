@@ -11,14 +11,14 @@ class RenderMesh : public RenderObject
 {
 public:
     RenderMesh();
-    RenderMesh(const RenderMesh& other);
-    RenderMesh(RenderMesh&& other);
-    RenderMesh(const Mesh& mesh);
-    RenderMesh(Mesh&& mesh);
+    RenderMesh(const RenderMesh& other) = delete;
+    RenderMesh(RenderMesh&& other) = delete;
     virtual ~RenderMesh();
 
-    RenderMesh& operator=(const RenderMesh& other);
-    RenderMesh& operator=(RenderMesh&& other);
+    RenderMesh& operator=(const RenderMesh& other) = delete;
+    RenderMesh& operator=(RenderMesh&& other) = delete;
+
+    virtual void render(const Renderer& renderer, const Camera& camera) const override;
 
     inline const Mesh& getMeshData() const { return m_MeshData; }
 
@@ -34,5 +34,4 @@ protected:
 
 private:
     Mesh m_MeshData;
-
 };

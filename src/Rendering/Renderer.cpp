@@ -3,6 +3,10 @@
 #include "Rendering/Objects/RenderObject.h"
 #include "Rendering/Objects/Camera.h"
 
+/**
+ * Frame buffer drawing setup code mostly from learnopengl.com 
+ */
+
 Renderer::Renderer()
 {
     GLCall(glClearColor(0.1f, 0.1f, 0.1f, 1.f));
@@ -55,7 +59,7 @@ void Renderer::endScene()
     GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 }
 
-void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
+void Renderer::drawTriangles(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
 {
     // Binding data
     va.bind();
@@ -64,6 +68,17 @@ void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& 
 
     // Drawing data
     GLCall(glDrawElements(GL_TRIANGLES, (GLsizei)ib.getCount(), GL_UNSIGNED_INT, nullptr));
+}
+
+void Renderer::drawPoints(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
+{
+    // Binding data
+    va.bind();
+    ib.bind();
+    shader.bind();
+
+    // Drawing data
+    GLCall(glDrawElements(GL_POINTS, (GLsizei)ib.getCount(), GL_UNSIGNED_INT, nullptr));
 }
 
 void Renderer::draw(const RenderObject& object, const Camera& camera) const

@@ -8,14 +8,15 @@
 
 ObjectEditor::ObjectEditor()
 {
+    m_RenderMesh = std::make_unique<RenderMesh>();
+    m_RenderPointCloud = std::make_unique<RenderPointCloud>();
+    m_BrushMesh = std::make_unique<RenderMesh>();
+    m_BrushMesh->setMesh(MeshGenerator::GenCircle(64));
+    m_BrushMesh->getShader().loadFromFile("Resources/brushVert.glsl", "Resources/brushFrag.glsl");
+    m_CoordinateSystem = std::make_unique<RenderGrid>(glm::vec2{50.f, 50.f}, glm::vec2{1.f, 1.f});
     m_Camera.setIsUsingOrbiting(true);
 
     loadDefaultCube();
-    
-    m_BrushMesh = std::make_unique<RenderMesh>(MeshGenerator::GenCircle(64));
-    m_BrushMesh->getShader().loadFromFile("Resources/brushVert.glsl", "Resources/brushFrag.glsl");
-
-    m_CoordinateSystem = std::make_unique<RenderGrid>(glm::vec2{50.f, 50.f}, glm::vec2{1.f, 1.f});
 
     m_Renderer.setViewport({0, 0}, {800, 600});
 }
@@ -28,12 +29,12 @@ void ObjectEditor::loadDefaultCube()
 {
     try
     {
-        setRenderMesh(RenderMesh(ObjectLoader::LoadMesh("Resources/defaultCube.obj")));
+        setRenderMesh(ObjectLoader::LoadMesh("Resources/defaultCube.obj"));
     }
     catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
-        setRenderMesh(RenderMesh(Mesh()));
+        setRenderMesh(Mesh());
     }
 }
 
@@ -46,7 +47,8 @@ void ObjectEditor::render()
 {
     m_Renderer.beginScene();
 
-    m_Renderer.draw(*m_RenderMesh, m_Camera);
+    //m_Renderer.draw(*m_RenderMesh, m_Camera);
+    m_Renderer.draw(*m_RenderPointCloud, m_Camera);
     if (m_ShouldRenderBrush)
         m_Renderer.draw(*m_BrushMesh, m_Camera);
     m_Renderer.draw(*m_CoordinateSystem, m_Camera);
@@ -55,15 +57,16 @@ void ObjectEditor::render()
 }
 
 
-void ObjectEditor::setRenderMesh(const RenderMesh& rm)
+void ObjectEditor::setRenderMesh(const Mesh& m)
 {
-    m_RenderMesh = std::make_unique<RenderMesh>(rm);
+    m_RenderMesh->setMesh(m);
+    m_RenderPointCloud->setPointCloud(m_Processor.process(m_RenderMesh->getMeshData()));
 }
 
-void ObjectEditor::setRenderMesh(RenderMesh&& rm)
+void ObjectEditor::setRenderMesh(Mesh&& m)
 {
-    m_RenderMesh = std::make_unique<RenderMesh>(std::move(rm));
-    m_RenderMesh->getShader().loadFromFile("Resources/meshVert.glsl", "Resources/meshFrag.glsl");
+    m_RenderMesh->setMesh(std::move(m));
+    m_RenderPointCloud->setPointCloud(m_Processor.process(m_RenderMesh->getMeshData()));
 }
 
 void ObjectEditor::onWindowAspectRatioChanged(float x, float y)

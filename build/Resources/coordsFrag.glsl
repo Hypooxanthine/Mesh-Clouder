@@ -14,28 +14,28 @@ vec4 pColor = vec4(0.3, 0.3, 0.3, 0.5);
 
 bool IsInXLine()
 {
-    float r = fragPos.x;
+    float r = fragPos.z;
 
     return abs(r) < lineWidth; // Main axis are twice as thick
 }
 
 bool IsInYLine()
 {
-    float r = fragPos.z;
+    float r = fragPos.x;
 
     return abs(r) < lineWidth; // Main axis are twice as thick
 }
 
 bool IsInXParallelLine()
 {
-    float r = mod(abs(fragPos.x) + lineWidth / 2.0, tileSize.x); // Positive
+    float r = mod(abs(fragPos.z) + lineWidth / 2.0, tileSize.y); // Positive
 
     return r < lineWidth;
 }
 
 bool IsInYParallelLine()
 {
-    float r = mod(abs(fragPos.z) + lineWidth / 2.0, tileSize.y); // Positive
+    float r = mod(abs(fragPos.x) + lineWidth / 2.0, tileSize.x); // Positive
 
     return r < lineWidth;
 }

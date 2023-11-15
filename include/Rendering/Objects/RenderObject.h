@@ -21,7 +21,7 @@ public:
     RenderObject();
     virtual ~RenderObject() = default;
 
-    void render(const Renderer& renderer, const Camera& camera) const;
+    virtual void render(const Renderer& renderer, const Camera& camera) const = 0;
 
     inline const VertexArray& getVertexArray() const { return *m_VertexArray; }
     inline const IndexBuffer& getIndexBuffer() const { return *m_IndexBuffer; }

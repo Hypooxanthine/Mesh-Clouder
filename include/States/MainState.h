@@ -41,7 +41,6 @@ private:
     ObjectEditor m_ObjectEditor;
 
     bool m_ShouldImportMesh = false;
-    bool m_MeshLoaded = false;
     bool m_RealTimePointCloudGeneration = true;
     int m_SelectedView = 0;
 

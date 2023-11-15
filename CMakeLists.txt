@@ -80,6 +80,7 @@ set(PROJECT_IMPL
     ${SOURCE_DIR}/Rendering/Objects/Camera.cpp
     ${SOURCE_DIR}/Rendering/Objects/RenderObject.cpp
     ${SOURCE_DIR}/Rendering/Objects/RenderMesh.cpp
+    ${SOURCE_DIR}/Rendering/Objects/RenderPointCloud.cpp
     ${SOURCE_DIR}/Rendering/Objects/RenderGrid.cpp
     ${SOURCE_DIR}/Rendering/Objects/MeshGenerator.cpp
     ${SOURCE_DIR}/Editor/ObjectEditor.cpp

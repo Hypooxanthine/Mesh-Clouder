@@ -9,19 +9,6 @@ RenderObject::RenderObject()
     
 }
 
-void RenderObject::render(const Renderer& renderer, const Camera& camera) const
-{
-    const glm::mat4 MVP = camera.getTransform() * this->getTransform();
-
-    // Updating uniforms
-    getShader().bind();
-    getShader().setUniformMat4f("u_MVP", MVP);
-    getShader().setUniformMat4f("u_M", this->getTransform());
-
-    // Drawing object
-    renderer.draw(getVertexArray(), getIndexBuffer(), getShader());
-}
-
 void RenderObject::setTranslation(const glm::vec3& translation)
 {
     m_Translation = translation;
