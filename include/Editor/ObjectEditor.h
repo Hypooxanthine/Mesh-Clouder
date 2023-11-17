@@ -125,7 +125,7 @@ private:
 
     /* Controls */
     float m_OrbitSpeed = 0.5f;
-    float m_ZoomSpeed = 1.f;
+    float m_ZoomSpeed = 0.1f;
 
     /* Context */
     glm::vec2 m_RenderTargetSize = { 800, 600 };

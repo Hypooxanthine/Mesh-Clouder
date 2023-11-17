@@ -101,7 +101,10 @@ void ObjectEditor::onUserDrag(const glm::vec2& drag)
 
 void ObjectEditor::onUserZoom(float value)
 {
-    m_Camera.setViewDistance(m_Camera.getViewDistance() - value * m_ZoomSpeed);
+    if(value < 0.f)
+        m_Camera.setViewDistance(m_Camera.getViewDistance() * (1.f - value * m_ZoomSpeed));
+    else
+        m_Camera.setViewDistance(m_Camera.getViewDistance() / (1.f + value * m_ZoomSpeed));
 }
 
 void ObjectEditor::onMouseMoved(float x, float y)
