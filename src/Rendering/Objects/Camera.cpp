@@ -153,11 +153,8 @@ void Camera::setViewAzimuth(float azimuth)
 {
     m_ViewAzimuth = azimuth;
 
-    static const float epsilon = 0.001f;
-
     while (m_ViewAzimuth > 360.f) m_ViewAzimuth -= 360.f;
     while (m_ViewAzimuth < 0.f) m_ViewAzimuth += 360.f;
-    m_ViewElevation = glm::clamp(m_ViewElevation, epsilon, 180.f - epsilon);
 
     // We allow changing this while not using orbiting but there is no point computing view again because azimtuh won't be used in computation anyway.
     if(isUsingOrbiting())
@@ -167,6 +164,8 @@ void Camera::setViewAzimuth(float azimuth)
 void Camera::setViewElevation(float elevation)
 {
     m_ViewElevation = elevation;
+    static const float epsilon = 0.001f;
+    m_ViewElevation = glm::clamp(m_ViewElevation, epsilon, 180.f - epsilon);
     // We allow changing this while not using orbiting but there is no point computing view again because elevation won't be used in computation anyway.
     if(isUsingOrbiting())
         requestComputeView();
