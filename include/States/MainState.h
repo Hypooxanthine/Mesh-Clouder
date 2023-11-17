@@ -40,9 +40,11 @@ private:
 private:
     ObjectEditor m_ObjectEditor;
 
+    /* ImGui related vars */
     bool m_ShouldImportMesh = false;
     bool m_RealTimePointCloudGeneration = true;
     int m_SelectedView = 0;
+    float m_PointSize = 0.05f;
 
     ImVec2 m_PreviousViewportSize;
     ImVec2 m_PreviousMousePos;

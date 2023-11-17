@@ -68,6 +68,8 @@ public:
      */
     void setShouldRenderPointCloud(bool val);
 
+    void setPointSize(float size);
+
     /**
      * @brief Has to be triggered when viewport was resized.
      * 

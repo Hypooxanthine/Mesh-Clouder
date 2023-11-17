@@ -81,6 +81,11 @@ void ObjectEditor::setShouldRenderPointCloud(bool val)
     m_ShouldRenderPointCloud = val;
 }
 
+void ObjectEditor::setPointSize(float size)
+{
+    m_RenderPointCloud->setPointSize(size);
+}
+
 void ObjectEditor::onWindowAspectRatioChanged(float x, float y)
 {
     m_RenderTargetSize = { x, y };

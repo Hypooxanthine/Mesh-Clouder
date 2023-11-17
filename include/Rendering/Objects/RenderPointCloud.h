@@ -36,5 +36,5 @@ private:
     std::unique_ptr<VertexBufferLayout> m_Layout;
 
     /* Settings */
-    float m_PointSize = 0.1f;
+    float m_PointSize = 0.05f;
 };

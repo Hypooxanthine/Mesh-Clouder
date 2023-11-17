@@ -83,6 +83,12 @@ void MainState::renderImGui()
             m_ObjectEditor.setShouldRenderPointCloud(m_SelectedView == 1 || m_SelectedView == 2);
         }
         ImGui::Checkbox("Real time point cloud processing", &m_RealTimePointCloudGeneration);
+        ImGui::Text("Point size:");
+        ImGui::SameLine();
+        if(ImGui::SliderFloat("##PointSizeSlider", &m_PointSize, 0.0001f, 0.1f, "%.4f"))
+        {
+            m_ObjectEditor.setPointSize(m_PointSize);
+        }
     ImGui::End();
 
     ImGui::Begin("Actions");
