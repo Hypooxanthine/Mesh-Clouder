@@ -59,6 +59,8 @@ public:
 	 */
 	void draw(const RenderObject& object, const Camera& camera) const;
 
+	const glm::vec<2, unsigned int>& getViewportSize() const;
+
 	void setViewport(const glm::vec<2, unsigned int>& o, const glm::vec<2, unsigned int>& s);
 	void setViewportOrigin(const glm::vec<2, unsigned int>& o);
 	void setViewportSize(const glm::vec<2, unsigned int>& s);

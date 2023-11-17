@@ -8,7 +8,7 @@
 RenderPointCloud::RenderPointCloud()
 {
     m_Shader = std::make_unique<Shader>();
-    m_Shader->loadFromFile("Resources/pointCloudVert.glsl", "Resources/pointCloudFrag.glsl");
+    m_Shader->loadFromFile("Resources/pointCloudVert.glsl", "Resources/pointCloudFrag.glsl", "Resources/pointCloudGeom.glsl");
 }
 
 RenderPointCloud::~RenderPointCloud()
@@ -17,10 +17,16 @@ RenderPointCloud::~RenderPointCloud()
 void RenderPointCloud::render(const Renderer& renderer, const Camera& camera) const
 {
     const glm::mat4 MVP = camera.getTransform() * this->getTransform();
+    auto cameraUp = camera.getUpVector();
+    auto cameraRight = camera.getRightVector();
 
     // Updating uniforms
     getShader().bind();
     getShader().setUniformMat4f("u_MVP", MVP);
+    getShader().setUniformMat4f("u_VP", camera.getTransform());
+    getShader().setUniform1f("u_PointSize", m_PointSize);
+    getShader().setUniform3f("u_CameraRight", cameraRight);
+    getShader().setUniform3f("u_CameraUp", cameraUp);
     
     renderer.drawPoints(getVertexArray(), getIndexBuffer(), getShader());
 }
@@ -37,14 +43,14 @@ void RenderPointCloud::setPointCloud(PointCloud&& pc)
     init();
 }
 
-float RenderPointCloud::getCircleRadius() const
+float RenderPointCloud::getPointSize() const
 {
-    return m_CircleRadius;
+    return m_PointSize;
 }
 
-void RenderPointCloud::setCircleRadius(float r)
+void RenderPointCloud::setPointSize(float s)
 {
-    m_CircleRadius = r;
+    m_PointSize = s;
 }
 
 

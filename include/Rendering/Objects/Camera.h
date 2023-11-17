@@ -49,6 +49,9 @@ public:
      * @return const glm::mat4& Rotation matrix.
      */
     const glm::mat4& getRotation() const;
+    glm::vec3 getUpVector() const;
+    glm::vec3 getRightVector() const;
+    glm::vec3 getForwardVector() const;
     bool  isUsingOrbiting() const;
     float getViewAzimuth() const;
     float getViewElevation() const;

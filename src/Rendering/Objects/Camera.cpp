@@ -4,6 +4,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "Math/Math.h"
+
 const glm::vec3 Rotation::X_AXIS = glm::vec3(1.f, 0.f, 0.f);
 const glm::vec3 Rotation::Y_AXIS = glm::vec3(0.f, 1.f, 0.f);
 const glm::vec3 Rotation::Z_AXIS = glm::vec3(0.f, 0.f, 1.f);
@@ -41,9 +43,30 @@ const glm::mat4 &Camera::getRotation() const
 {
     // When using orbiting, we need to compute rotation back from view transform so we're able to give the real value of rotation.
     if(isUsingOrbiting())
-        m_Rotation = glm::translate(glm::mat4(1.f), m_Translation) * m_ViewTransform;
+    {
+        m_Rotation = getTransform();
+        m_Rotation[3] = glm::vec4(0.f, 0.f, 0.f, 1.f);
+    }
     
     return m_Rotation;
+}
+
+glm::vec3 Camera::getUpVector() const
+{
+    const glm::mat4& view = getViewTransform();
+    return glm::vec3(view[0][1], view[1][1], view[2][1]);
+}
+
+glm::vec3 Camera::getRightVector() const
+{
+    const glm::mat4& view = getViewTransform();
+    return glm::vec3(view[0][0], view[1][0], view[2][0]);
+}
+
+glm::vec3 Camera::getForwardVector() const
+{
+    const glm::mat4& view = getViewTransform();
+    return glm::vec3(view[0][2], view[1][2], view[2][2]);
 }
 
 bool Camera::isUsingOrbiting() const

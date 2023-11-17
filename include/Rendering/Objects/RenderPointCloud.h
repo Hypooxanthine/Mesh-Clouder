@@ -21,8 +21,8 @@ public:
     void setPointCloud(const PointCloud& pc);
     void setPointCloud(PointCloud&& pc);
 
-    float getCircleRadius() const;
-    void setCircleRadius(float r);
+    float getPointSize() const;
+    void setPointSize(float s);
 
 private:
     void init();
@@ -36,5 +36,5 @@ private:
     std::unique_ptr<VertexBufferLayout> m_Layout;
 
     /* Settings */
-    float m_CircleRadius = 1.f;
+    float m_PointSize = 0.1f;
 };

@@ -98,6 +98,11 @@ void Shader::setUniform3f(const std::string& name, float v0, float v1, float v2)
     GLCall(glUniform3f(getUniformLocation(name), v0, v1, v2));
 }
 
+void Shader::setUniform3f(const std::string& name, const glm::vec3& vec) const
+{
+    setUniform3f(name, vec.x, vec.y, vec.z);
+}
+
 void Shader::setUniform4f(const std::string& name, float v0, float v1, float v2, float v3) const
 {
     GLCall(glUniform4f(getUniformLocation(name), v0, v1, v2, v3));
@@ -140,14 +145,29 @@ unsigned int Shader::createShader(const std::string& vertexShader, const std::st
     unsigned int gs = compileShader(GL_GEOMETRY_SHADER, geometryShader);
 
     GLCall(glAttachShader(program, vs));
-    GLCall(glAttachShader(program, fs));
     GLCall(glAttachShader(program, gs));
+    GLCall(glAttachShader(program, fs));
     GLCall(glLinkProgram(program));
     GLCall(glValidateProgram(program));
 
+    GLint linkStatus;
+    GLCall(glGetProgramiv(program, GL_LINK_STATUS, &linkStatus));
+    if (linkStatus == GL_FALSE) {
+        GLint maxLength = 0;
+        GLCall(glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength));
+
+        std::vector<GLchar> infoLog(maxLength);
+        GLCall(glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]));
+
+        std::cerr << "Program link error: " << &infoLog[0] << std::endl;
+
+        GLCall(glDeleteProgram(program));
+        return 0;
+    }
+
     GLCall(glDeleteShader(vs));
-    GLCall(glDeleteShader(fs));
     GLCall(glDeleteShader(gs));
+    GLCall(glDeleteShader(fs));
 
     return program;
 }
