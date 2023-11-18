@@ -45,6 +45,7 @@ private:
     bool m_RealTimePointCloudGeneration = true;
     int m_SelectedView = 0;
     float m_PointSize = 0.05f;
+    float m_Density = 1;
 
     ImVec2 m_PreviousViewportSize;
     ImVec2 m_PreviousMousePos;

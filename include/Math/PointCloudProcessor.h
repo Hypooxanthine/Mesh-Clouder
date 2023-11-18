@@ -25,15 +25,19 @@ public:
      */
     PointCloud process(const Mesh& mesh) const;
 
-    void setDensity(size_t d);
+    void setDensity(float d);
     void setMinDisturb(const glm::vec3& d);
     void setMaxDisturb(const glm::vec3& d);
+
+private:
+    /* Helper functions */
+    void processTriangle(const glm::vec3& A, const glm::vec3& B, const glm::vec3& C, PointCloud& output) const;
 
 private:
     /* Processing settings */
 
     // Density
-    size_t m_PointsPerEdge = 1;
+    float m_PointGap = 1.f;
 
     // Disturbances
     glm::vec3 m_MinDisturb, m_MaxDisturb;

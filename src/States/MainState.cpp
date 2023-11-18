@@ -82,18 +82,30 @@ void MainState::renderImGui()
             m_ObjectEditor.setShouldRenderMesh(m_SelectedView == 0 || m_SelectedView == 2);
             m_ObjectEditor.setShouldRenderPointCloud(m_SelectedView == 1 || m_SelectedView == 2);
         }
-        ImGui::Checkbox("Real time point cloud processing", &m_RealTimePointCloudGeneration);
+        if(ImGui::Checkbox("Real time point cloud processing", &m_RealTimePointCloudGeneration))
+        {
+            m_ObjectEditor.setRealTimeProcessing(m_RealTimePointCloudGeneration);
+        }
         ImGui::Text("Point size:");
         ImGui::SameLine();
         if(ImGui::SliderFloat("##PointSizeSlider", &m_PointSize, 0.0001f, 0.1f, "%.4f"))
         {
             m_ObjectEditor.setPointSize(m_PointSize);
         }
+        ImGui::Text("Samples:");
+        ImGui::SameLine();
+        if(ImGui::SliderFloat("##SamplesSlider", &m_Density, 0.f, 20.f, "%.1f"))
+        {
+            m_ObjectEditor.setPointCloudsSamples(m_Density);
+        }
     ImGui::End();
 
     ImGui::Begin("Actions");
         if(m_RealTimePointCloudGeneration) ImGui::BeginDisabled();
-            ImGui::Button("Process point cloud");
+            if(ImGui::Button("Process point cloud"))
+            {
+                m_ObjectEditor.processPointCloud();
+            }
         if(m_RealTimePointCloudGeneration) ImGui::EndDisabled();
     ImGui::End();
 }

@@ -5,6 +5,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "Data/PointCloud.h"
+
 Ray Math::RayUnderCursor(const glm::vec3& cameraPos, const glm::mat4& viewProjection, const glm::vec2& cursorPos, const glm::vec2& viewportSize)
 {
     Ray out;
@@ -98,4 +100,59 @@ glm::mat4 Math::AlignVectors(const glm::vec3& from, const glm::vec3& to)
     glm::mat4 mat = glm::rotate(glm::mat4(1.f), angle, n);
 
     return mat;
+}
+
+void Math::SampleTriangle(const glm::vec3& A, const glm::vec3& B, const glm::vec3& C, PointCloud& data, unsigned int samples)
+{
+    if(samples == 0) return;
+
+    // Initialize data size
+    data.clear();
+    unsigned int power = 1;
+    for(unsigned int i = 1; i < samples; i++) power *= 6;
+    size_t numberOfPoints = (power - 1) / 5; 
+    data.reservePoints(numberOfPoints);
+
+    // Now that data size is set up, we can fill it
+    SampleTriangleRecursive(A, B, C, data, samples);
+}
+
+void Math::SampleTriangleRecursive(const glm::vec3& A, const glm::vec3& B, const glm::vec3& C, PointCloud& data, unsigned int samples)
+{
+    /* Defining useful vectors */
+    const glm::vec3& OA = A;
+    const glm::vec3& OB = B;
+    const glm::vec3& OC = C;
+    const glm::vec3 AB = OB - OA;
+    const glm::vec3 BC = OC - OB;
+    const glm::vec3 CA = OA - OC;
+    const glm::vec3 OAp = OB + BC / 2.f;
+    const glm::vec3 OBp = OC + CA / 2.f;
+    const glm::vec3 OCp = OA + AB / 2.f;
+    const glm::vec3 n = glm::normalize(glm::cross(AB, BC));
+
+    /* Placing a point at the center of triangle */
+    const glm::vec3 AAp = OAp - OA;
+    const glm::vec3 BBp = OBp - OB;
+    // P is center of triangle
+    glm::vec3 OP;
+    if(AB.x != 0.f)
+        OP = OA + (AB.x / (AAp - BBp).x) * AAp;
+    else if(AB.y != 0.f)
+        OP = OA + (AB.y / (AAp - BBp).y) * AAp;
+    else
+        OP = OA + (AB.z / (AAp - BBp).z) * AAp;
+    data.addPoint(PointCloud::Element{OP, n});
+    
+    /* Doing the same for surrounding triangles */
+    if(samples == 1) return;
+
+    const unsigned int next = samples - 1;
+    SampleTriangleRecursive( OA, OCp, OP, data, next);
+    SampleTriangleRecursive(OCp,  OB, OP, data, next);
+    SampleTriangleRecursive( OB, OAp, OP, data, next);
+    SampleTriangleRecursive(OAp,  OC, OP, data, next);
+    SampleTriangleRecursive (OC, OBp, OP, data, next);
+    SampleTriangleRecursive(OBp,  OA, OP, data, next);
+
 }

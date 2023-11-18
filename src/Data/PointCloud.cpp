@@ -31,6 +31,12 @@ void PointCloud::reservePoints(size_t count)
     m_Indices.reserve(count);
 }
 
+void PointCloud::clear()
+{
+    m_Indices.clear();
+    m_PointsPositions.clear();
+}
+
 size_t PointCloud::getPointsCount() const
 {
     return m_PointsPositions.size();

@@ -6,6 +6,8 @@
 
 #include <glm/glm.hpp>
 
+class PointCloud;
+
 /**
  * @brief Static functions for maths.
  * 
@@ -34,4 +36,8 @@ public:
      * @return glm::mat4 Rotation to apply to "from" so that its aligned with "to"
      */
     static glm::mat4 AlignVectors(const glm::vec3& from, const glm::vec3& to);
+    
+    static void SampleTriangle(const glm::vec3& A, const glm::vec3& B, const glm::vec3& C, PointCloud& data, unsigned int samples);
+
+    static void SampleTriangleRecursive(const glm::vec3& A, const glm::vec3& B, const glm::vec3& C, PointCloud& data, unsigned int samples);
 };

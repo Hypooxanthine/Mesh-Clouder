@@ -40,7 +40,11 @@ void ObjectEditor::loadDefaultCube()
 
 void ObjectEditor::update()
 {
-    
+    if(m_RealTimeProcessing && m_ShouldProcess)
+    {
+        processPointCloud();
+        m_ShouldProcess = false;
+    }
 }
 
 void ObjectEditor::render()
@@ -62,13 +66,13 @@ void ObjectEditor::render()
 void ObjectEditor::setRenderMesh(const Mesh& m)
 {
     m_RenderMesh->setMesh(m);
-    m_RenderPointCloud->setPointCloud(m_Processor.process(m_RenderMesh->getMeshData()));
+    processPointCloud();
 }
 
 void ObjectEditor::setRenderMesh(Mesh&& m)
 {
     m_RenderMesh->setMesh(std::move(m));
-    m_RenderPointCloud->setPointCloud(m_Processor.process(m_RenderMesh->getMeshData()));
+    processPointCloud();
 }
 
 void ObjectEditor::setShouldRenderMesh(bool val)
@@ -84,6 +88,22 @@ void ObjectEditor::setShouldRenderPointCloud(bool val)
 void ObjectEditor::setPointSize(float size)
 {
     m_RenderPointCloud->setPointSize(size);
+}
+
+void ObjectEditor::setRealTimeProcessing(float val)
+{
+    m_RealTimeProcessing = val;
+}
+
+void ObjectEditor::setPointCloudsSamples(float val)
+{
+    m_Processor.setDensity(val);
+    m_ShouldProcess = true;
+}
+
+void ObjectEditor::processPointCloud()
+{
+    m_RenderPointCloud->setPointCloud(m_Processor.process(m_RenderMesh->getMeshData()));
 }
 
 void ObjectEditor::onWindowAspectRatioChanged(float x, float y)

@@ -19,6 +19,16 @@ public:
     {
         Vector3f position;
         Vector3f normal;
+
+        Element() = default;
+
+        Element(const Vector3f& p, const Vector3f& n)
+            : position(p), normal(n)
+        {}
+
+        Element(const glm::vec3& p, const glm::vec3& n)
+            : position({p.x, p.y, p.z}), normal({n.x, n.y, n.z})
+        {}
     };
 public:
     PointCloud();
@@ -28,6 +38,7 @@ public:
     PointCloud& operator=(PointCloud&& other);
 
     void reservePoints(size_t count);
+    void clear();
 
     size_t getPointsCount() const;
     const std::vector<Element>& getPointsData() const;

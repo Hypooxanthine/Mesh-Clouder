@@ -68,7 +68,32 @@ public:
      */
     void setShouldRenderPointCloud(bool val);
 
+    /**
+     * @brief Set size of each point (represented by a square) from point cloud.
+     * 
+     * @param size Size of points.
+     */
     void setPointSize(float size);
+
+    /**
+     * @brief Define real time point cloud processing. If point cloud processing is not in real time, you will need to process it manually by using @ref processPointCloud.
+     * 
+     * @param val True for real time, false otherwise.
+     */
+    void setRealTimeProcessing(float val);
+
+    /**
+     * @brief Set the density for point cloud processing. For a density of 1.f, There will be 1 point per unit. For a density of 10.f, there will be 10 points per unit.
+     * 
+     * @param val The number of samples.
+     */
+    void setPointCloudsSamples(float val);
+
+    /**
+     * @brief Manually update point cloud.
+     * 
+     */
+    void processPointCloud();
 
     /**
      * @brief Has to be triggered when viewport was resized.
@@ -122,6 +147,8 @@ private:
 
     /* Editing */
     PointCloudProcessor m_Processor;
+    bool m_RealTimeProcessing = true;
+    bool m_ShouldProcess = false;
 
     /* Controls */
     float m_OrbitSpeed = 0.5f;
