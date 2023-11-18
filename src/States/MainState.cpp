@@ -92,11 +92,23 @@ void MainState::renderImGui()
         {
             m_ObjectEditor.setPointSize(m_PointSize);
         }
-        ImGui::Text("Samples:");
+        ImGui::Text("Density:");
         ImGui::SameLine();
-        if(ImGui::SliderFloat("##SamplesSlider", &m_Density, 0.f, 20.f, "%.1f"))
+        if(ImGui::SliderFloat("##DensitySlider", &m_Density, 0.f, 20.f, "%.1f"))
         {
-            m_ObjectEditor.setPointCloudsSamples(m_Density);
+            m_ObjectEditor.setPointCloudDensity(m_Density);
+        }
+        ImGui::Text("Min disturb:");
+        ImGui::SameLine();
+        if(ImGui::SliderFloat3("##MinDisturbSlider", &m_MinDisturb.x, -1.f, 1.f, "%.3f"))
+        {
+            m_ObjectEditor.setPointCloudMinDisturb(m_MinDisturb);
+        }
+        ImGui::Text("Max disturb:");
+        ImGui::SameLine();
+        if(ImGui::SliderFloat3("##MaxDisturbSlider", &m_MaxDisturb.x, -1.f, 1.f, "%.3f"))
+        {
+            m_ObjectEditor.setPointCloudMaxDisturb(m_MaxDisturb);
         }
     ImGui::End();
 

@@ -95,10 +95,32 @@ void ObjectEditor::setRealTimeProcessing(float val)
     m_RealTimeProcessing = val;
 }
 
-void ObjectEditor::setPointCloudsSamples(float val)
+void ObjectEditor::setPointCloudDensity(float val)
 {
     m_Processor.setDensity(val);
     m_ShouldProcess = true;
+}
+
+void ObjectEditor::setPointCloudMinDisturb(const glm::vec3& min)
+{
+    m_Processor.setMinDisturb(min);
+    m_ShouldProcess = true;
+}
+
+void ObjectEditor::addPointCloudMinDisturb(const glm::vec3& minDelta)
+{
+    setPointCloudMinDisturb(m_Processor.getMinDisturb() + minDelta);
+}
+
+void ObjectEditor::setPointCloudMaxDisturb(const glm::vec3& max)
+{
+    m_Processor.setMaxDisturb(max);
+    m_ShouldProcess = true;
+}
+
+void ObjectEditor::addPointCloudMaxDisturb(const glm::vec3& maxDelta)
+{
+    setPointCloudMaxDisturb(m_Processor.getMaxDistrub() + maxDelta);
 }
 
 void ObjectEditor::processPointCloud()

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <random>
 
 #include <glm/glm.hpp>
 
@@ -14,7 +15,7 @@
 class PointCloudProcessor
 {
 public:
-    PointCloudProcessor() = default;
+    PointCloudProcessor();
     ~PointCloudProcessor() = default;
 
     /**
@@ -28,6 +29,11 @@ public:
     void setDensity(float d);
     void setMinDisturb(const glm::vec3& d);
     void setMaxDisturb(const glm::vec3& d);
+    void setSeed(uint32_t seed);
+
+    float getDensity() const;
+    const glm::vec3& getMinDisturb() const;
+    const glm::vec3& getMaxDistrub() const;
 
 private:
     /* Helper functions */
@@ -40,5 +46,6 @@ private:
     float m_PointGap = 1.f;
 
     // Disturbances
+    mutable std::mt19937 m_RandomGenerator;
     glm::vec3 m_MinDisturb, m_MaxDisturb;
 };

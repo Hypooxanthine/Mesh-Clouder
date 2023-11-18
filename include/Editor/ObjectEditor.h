@@ -87,7 +87,12 @@ public:
      * 
      * @param val The number of samples.
      */
-    void setPointCloudsSamples(float val);
+    void setPointCloudDensity(float val);
+
+    void setPointCloudMinDisturb(const glm::vec3& min);
+    void addPointCloudMinDisturb(const glm::vec3& minDelta);
+    void setPointCloudMaxDisturb(const glm::vec3& max);
+    void addPointCloudMaxDisturb(const glm::vec3& maxDelta);
 
     /**
      * @brief Manually update point cloud.

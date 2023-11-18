@@ -2,31 +2,18 @@
 
 #include "Math/Math.h"
 
+#include <iostream>
+
+PointCloudProcessor::PointCloudProcessor()
+    : m_RandomGenerator(std::mt19937::default_seed)
+{
+    
+}
+
 PointCloud PointCloudProcessor::process(const Mesh& mesh) const
 {
     PointCloud out;
-    /*
-    // Initialize data size
-    unsigned int samples = 1;
-    unsigned int power = 1;
-    for(unsigned int i = 1; i < samples; i++) power *= 6;
-    size_t numberOfPoints = (power - 1) / 5; 
-    out.reservePoints(numberOfPoints);
-
-    for(size_t i = 0; i < mesh.getIndicesCount(); i += 3)
-    {
-        const auto& iA = mesh.getIndices()[i + 0];
-        const auto& iB = mesh.getIndices()[i + 1];
-        const auto& iC = mesh.getIndices()[i + 2];
-        const glm::vec3& A = mesh.getVertices()[iA].position;
-        const glm::vec3& B = mesh.getVertices()[iB].position;
-        const glm::vec3& C = mesh.getVertices()[iC].position;
-
-        Math::SampleTriangleRecursive(A, B, C, out, samples);
-    }
-
-    */
-
+    
     for(size_t i = 0; i < mesh.getIndicesCount(); i += 3)
     {
         const auto& iA = mesh.getIndices()[i + 0];
@@ -82,7 +69,19 @@ void PointCloudProcessor::processTriangle(const glm::vec3& A, const glm::vec3& B
     {
         for(yProgress = 0.f; continueY(); yProgress += m_PointGap)
         {
-            output.addPoint(PointCloud::Element(A + xProgress * x + yProgress * y, n));
+            glm::vec3 range = {std::abs(m_MaxDisturb.x - m_MinDisturb.x), std::abs(m_MaxDisturb.y - m_MinDisturb.y), std::abs(m_MaxDisturb.z - m_MinDisturb.z)};
+            
+            const glm::vec3 randomness
+            {
+                (range.x != 0.f ? std::fmod((float)m_RandomGenerator(), range.x) : 0.f) + m_MinDisturb.x,
+                (range.y != 0.f ? std::fmod((float)m_RandomGenerator(), range.y) : 0.f) + m_MinDisturb.y,
+                (range.z != 0.f ? std::fmod((float)m_RandomGenerator(), range.z) : 0.f) + m_MinDisturb.z
+            };
+
+            glm::vec3 position = A + (xProgress + randomness.x) * x + (yProgress + randomness.y) * y + randomness.z * n;
+                //+ randomness.z * n; // n is the local z axis (outside of triangle plane)
+
+            output.addPoint(PointCloud::Element(position, n));
         }
     }
 }
@@ -101,3 +100,25 @@ void PointCloudProcessor::setMaxDisturb(const glm::vec3& d)
 {
     m_MaxDisturb = d;
 }
+
+void PointCloudProcessor::setSeed(uint32_t seed)
+{
+    m_RandomGenerator.seed(seed);
+}
+
+
+float PointCloudProcessor::getDensity() const
+{
+    return 1.f / m_PointGap;
+}
+
+const glm::vec3& PointCloudProcessor::getMinDisturb() const
+{
+    return m_MinDisturb;
+}
+
+const glm::vec3& PointCloudProcessor::getMaxDistrub() const
+{
+    return m_MaxDisturb;
+}
+

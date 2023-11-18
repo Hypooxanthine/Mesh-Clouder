@@ -46,6 +46,7 @@ private:
     int m_SelectedView = 0;
     float m_PointSize = 0.05f;
     float m_Density = 1;
+    glm::vec3 m_MinDisturb, m_MaxDisturb;
 
     ImVec2 m_PreviousViewportSize;
     ImVec2 m_PreviousMousePos;
