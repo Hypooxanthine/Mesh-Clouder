@@ -160,6 +160,37 @@ std::string ObjectLoader::LoadTextFile(const std::string& filePath)
     return rawText;
 }
 
+void ObjectLoader::SavePointCloud(const PointCloud& pc, const std::string& filePath, bool binary)
+{
+    happly::PLYData plyOut;
+
+    const auto& points = pc.getPointsData();
+
+    // Properties to save
+    std::vector<float> x, y, z, nx, ny, nz;
+
+    for(const auto& element : points)
+    {
+        x.push_back(element.position.x);
+        y.push_back(element.position.y);
+        z.push_back(element.position.z);
+        nx.push_back(element.normal.x);
+        ny.push_back(element.normal.y);
+        nz.push_back(element.normal.z);
+    }
+
+    plyOut.addElement("vertex", pc.getPointsCount());
+
+    plyOut.getElement("vertex").addProperty<float>("x", x);
+    plyOut.getElement("vertex").addProperty<float>("y", y);
+    plyOut.getElement("vertex").addProperty<float>("z", z);
+    plyOut.getElement("vertex").addProperty<float>("nx", nx);
+    plyOut.getElement("vertex").addProperty<float>("ny", ny);
+    plyOut.getElement("vertex").addProperty<float>("nz", nz);
+
+    plyOut.write(filePath, binary ? happly::DataFormat::Binary : happly::DataFormat::ASCII);
+}
+
 std::string ObjectLoader::GetAbsolutePath(const std::string& relativePath, bool addQuotes)
 {
     std::string out =  std::filesystem::current_path().string() + "\\" + relativePath;

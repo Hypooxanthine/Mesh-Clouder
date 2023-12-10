@@ -39,6 +39,15 @@ public:
      */
     static std::string LoadTextFile(const std::string& filePath);
 
+    /**
+     * @brief Saves a point cloud in a new file.
+     * 
+     * @param pc The point cloud to save.
+     * @param filePath Where to save the file (path + file name).
+     * @param binary If true, saves in binary format. If false, saves in ASCII format.
+     */
+    static void SavePointCloud(const PointCloud& pc, const std::string& filePath, bool binary = true);
+
 private:
     static std::string GetAbsolutePath(const std::string& relativePath, bool addQuotes = true);
 
