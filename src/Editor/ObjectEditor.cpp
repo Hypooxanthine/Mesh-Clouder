@@ -123,6 +123,12 @@ void ObjectEditor::addPointCloudMaxDisturb(const glm::vec3& maxDelta)
     setPointCloudMaxDisturb(m_Processor.getMaxDistrub() + maxDelta);
 }
 
+void ObjectEditor::setSeed(uint32_t seed)
+{
+    m_Processor.setSeed(seed);
+    m_ShouldProcess = true;
+}
+
 void ObjectEditor::processPointCloud()
 {
     m_RenderPointCloud->setPointCloud(m_Processor.process(m_RenderMesh->getMeshData()));

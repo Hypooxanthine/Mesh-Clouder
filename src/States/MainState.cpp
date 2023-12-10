@@ -100,15 +100,21 @@ void MainState::renderImGui()
         }
         ImGui::Text("Min disturb:");
         ImGui::SameLine();
-        if(ImGui::SliderFloat3("##MinDisturbSlider", &m_MinDisturb.x, -1.f, 1.f, "%.3f"))
+        if(ImGui::SliderFloat3("##MinDisturbSlider", &m_MinDisturb.x, -.1f, .1f, "%.3f"))
         {
             m_ObjectEditor.setPointCloudMinDisturb(m_MinDisturb);
         }
         ImGui::Text("Max disturb:");
         ImGui::SameLine();
-        if(ImGui::SliderFloat3("##MaxDisturbSlider", &m_MaxDisturb.x, -1.f, 1.f, "%.3f"))
+        if(ImGui::SliderFloat3("##MaxDisturbSlider", &m_MaxDisturb.x, -.1f, .1f, "%.3f"))
         {
             m_ObjectEditor.setPointCloudMaxDisturb(m_MaxDisturb);
+        }
+        ImGui::Text("Seed:");
+        ImGui::SameLine();
+        if(ImGui::SliderInt("##SeedSlider", &m_Seed, 0, 20))
+        {
+            m_ObjectEditor.setSeed((uint32_t)m_Seed);
         }
     ImGui::End();
 

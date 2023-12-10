@@ -47,6 +47,7 @@ private:
     float m_PointSize = 0.05f;
     float m_Density = 1;
     glm::vec3 m_MinDisturb, m_MaxDisturb;
+    int m_Seed = 0;
 
     ImVec2 m_PreviousViewportSize;
     ImVec2 m_PreviousMousePos;

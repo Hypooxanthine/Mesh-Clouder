@@ -94,6 +94,8 @@ public:
     void setPointCloudMaxDisturb(const glm::vec3& max);
     void addPointCloudMaxDisturb(const glm::vec3& maxDelta);
 
+    void setSeed(uint32_t seed);
+
     /**
      * @brief Manually update point cloud.
      * 
