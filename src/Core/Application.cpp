@@ -1,6 +1,8 @@
 #include "Core/Application.h"
 
 #include <cstdlib>
+#include <thread>
+#include <chrono>
 
 #include <ImGui/imgui.h>
 #include <ImGui/impl/imgui_impl_glfw.h>
@@ -73,8 +75,12 @@ void Application::initImGui()
 
 void Application::run()
 {
+    const double minFrameTime = 1.0 / 144.0;
+
     while (!glfwWindowShouldClose(m_Window))
     {
+        double startTime = glfwGetTime();
+        
         if (m_CurrentState->isPendingKilled())
             m_CurrentState = std::move(m_CurrentState->getNextState());
 
@@ -85,7 +91,16 @@ void Application::run()
         renderImGui();
 
         glfwSwapBuffers(m_Window);
+
+        double elapsedTime = glfwGetTime() - startTime;
+        if (elapsedTime < minFrameTime)
+        {
+            int sleepTime = static_cast<int>((minFrameTime - elapsedTime) * 1000);
+            std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
+        }
     }
+
+
 }
 
 void Application::update()
