@@ -1,6 +1,6 @@
 # MeshClouder
 
-MeshClouder is a standalone program developed in C++ for Linux. It allows you to transform 3D mesh files (in .obj and .ply formats) into point clouds. The project aims to provide a user-friendly graphical interface to facilitate the conversion process. Users can adjust various parameters for the mesh-to-point cloud conversion and export the resulting point cloud as a .ply file.
+MeshClouder is a standalone program developed in C++ for Linux and Windows. It allows you to transform 3D mesh files (in .obj and .ply formats) into point clouds. The project aims to provide a user-friendly graphical interface to facilitate the conversion process. Users can adjust various parameters for the mesh-to-point cloud conversion and export the resulting point cloud as a .ply file.
 
 ## Features
 
