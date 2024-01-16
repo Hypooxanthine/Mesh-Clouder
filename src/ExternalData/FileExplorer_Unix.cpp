@@ -15,4 +15,15 @@ std::string FileExplorer::GetFileFromFileExplorer()
     return out;
 }
 
+std::string FileExplorer::SaveFileFromFileExplorer()
+{
+    char* filename = osdialog_file(OSDIALOG_SAVE, NULL, NULL, NULL);
+    if (filename == nullptr)
+        return "";
+    
+    std::string out = filename;
+    free(filename);
+    return out;
+}
+
 #endif

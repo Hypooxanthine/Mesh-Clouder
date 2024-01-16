@@ -7,6 +7,7 @@
 
 #include "ExternalData/FileExplorer.h"
 #include "Exceptions/FileNotLoaded.h"
+#include "Exceptions/FileNotSaved.h"
 
 Mesh ObjectLoader::LoadMesh(const std::string& filePath)
 {
@@ -160,11 +161,23 @@ std::string ObjectLoader::LoadTextFile(const std::string& filePath)
     return rawText;
 }
 
-void ObjectLoader::SavePointCloud(const PointCloud& pc, const std::string& filePath, bool binary)
+void ObjectLoader::SavePointCloud(const PointCloud& data)
+{
+    std::string path = FileExplorer::SaveFileFromFileExplorer();
+
+    if (path.empty()) throw FileNotSaved("Empty path.");
+
+    if (!path.ends_with(".ply"))
+        path += ".ply";
+
+    SavePointCloud(data, path);
+}
+
+void ObjectLoader::SavePointCloud(const PointCloud& data, const std::string& filePath, bool binary)
 {
     happly::PLYData plyOut;
 
-    const auto& points = pc.getPointsData();
+    const auto& points = data.getPointsData();
 
     // Properties to save
     std::vector<float> x, y, z, nx, ny, nz;
@@ -179,7 +192,7 @@ void ObjectLoader::SavePointCloud(const PointCloud& pc, const std::string& fileP
         nz.push_back(element.normal.z);
     }
 
-    plyOut.addElement("vertex", pc.getPointsCount());
+    plyOut.addElement("vertex", data.getPointsCount());
 
     plyOut.getElement("vertex").addProperty<float>("x", x);
     plyOut.getElement("vertex").addProperty<float>("y", y);

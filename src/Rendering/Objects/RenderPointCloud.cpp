@@ -43,6 +43,11 @@ void RenderPointCloud::setPointCloud(PointCloud&& pc)
     init();
 }
 
+const PointCloud& RenderPointCloud::getPointCloud() const
+{
+    return m_PointCloudData;
+}
+
 float RenderPointCloud::getPointSize() const
 {
     return m_PointSize;

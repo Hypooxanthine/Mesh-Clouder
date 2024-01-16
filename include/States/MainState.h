@@ -34,6 +34,7 @@ public:
 
 private:
     void importMesh();
+    void exportPointCloud();
     void updateViewportSize(const ImVec2& newSize);
     void handleViewportInputs();
 
@@ -42,6 +43,7 @@ private:
 
     /* ImGui related vars */
     bool m_ShouldImportMesh = false;
+    bool m_ShouldExportPointCloud = false;
     bool m_RealTimePointCloudGeneration = true;
     int m_SelectedView = 0;
     float m_PointSize = 0.05f;

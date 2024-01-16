@@ -21,6 +21,9 @@ void MainState::update()
     if (m_ShouldImportMesh)
         importMesh();
     
+    if (m_ShouldExportPointCloud)
+        exportPointCloud();
+
     m_ObjectEditor.update();
 }
 
@@ -52,6 +55,7 @@ void MainState::renderImGui()
             if (ImGui::BeginMenu("File"))
             {
                 ImGui::MenuItem("Import Mesh", nullptr, &m_ShouldImportMesh);
+                ImGui::MenuItem("Export Point Cloud", nullptr, &m_ShouldExportPointCloud);
 
                 ImGui::EndMenu();
             }
@@ -142,6 +146,23 @@ void MainState::importMesh()
         std::cout << e.what() << std::endl;
     }
     m_ShouldImportMesh = false;
+}
+
+void MainState::exportPointCloud()
+{
+    std::cout << "Exporting point cloud\n";
+    try
+    {
+        const PointCloud& pc = m_ObjectEditor.getPointCloudData();
+
+        ObjectLoader::SavePointCloud(pc);
+        std::cout << "Point cloud saved.\n";
+    }
+    catch (std::exception& e)
+    {
+        std::cout << e.what() << std::endl;
+    }
+    m_ShouldExportPointCloud = false;
 }
 
 void MainState::updateViewportSize(const ImVec2& newSize)

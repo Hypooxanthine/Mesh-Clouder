@@ -15,4 +15,11 @@ public:
      * @return std::string Selected file. Returns an empty string if cancelled.
      */
     static std::string GetFileFromFileExplorer();
+
+    /**
+     * @brief Allows user to type a file name in his OS file explorer in order of saving data.
+     * 
+     * @return std::string File path. Empty if cancelled.
+     */
+    static std::string SaveFileFromFileExplorer();
 };

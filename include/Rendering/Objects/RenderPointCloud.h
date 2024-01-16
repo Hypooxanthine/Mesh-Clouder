@@ -21,6 +21,8 @@ public:
     void setPointCloud(const PointCloud& pc);
     void setPointCloud(PointCloud&& pc);
 
+    const PointCloud& getPointCloud() const;
+
     float getPointSize() const;
     void setPointSize(float s);
 

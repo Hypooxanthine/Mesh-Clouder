@@ -132,6 +132,8 @@ public:
      */
     void onMouseMoved(float x, float y);
 
+    const PointCloud& getPointCloudData() const;
+
 private:
     void loadDefaultCube();
 
