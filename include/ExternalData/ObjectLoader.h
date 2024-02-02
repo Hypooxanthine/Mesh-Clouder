@@ -1,9 +1,11 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "Data/Mesh.h"
 #include "Data/PointCloud.h"
+#include "Data/Project.h"
 
 /**
  * @brief Deals with data loading.
@@ -12,6 +14,12 @@
 class ObjectLoader
 {
 public:
+
+    static Project LoadProject(const std::string& filePath);
+    static Project LoadProject();
+
+    static void SaveProject(const Project& p);
+    static void SaveProjectAs(Project& p);
 
     /**
      * @brief Loads a mesh from its file path. Extensions allowed are .obj and .ply.
@@ -61,4 +69,8 @@ private:
 private:
     static Mesh LoadOBJMesh(const std::string& filePath);
     static Mesh LoadPLYMesh(const std::string& filePath);
+
+private:
+    static std::vector<std::string> s_ProjectExt;
+    static std::vector<std::string> s_MeshesExts;
 };

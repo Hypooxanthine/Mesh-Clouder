@@ -9,6 +9,71 @@
 #include "Exceptions/FileNotLoaded.h"
 #include "Exceptions/FileNotSaved.h"
 
+std::vector<std::string> ObjectLoader::s_ProjectExt = {"mcproj"};
+std::vector<std::string> ObjectLoader::s_MeshesExts = {"obj", "ply"};
+
+Project ObjectLoader::LoadProject(const std::string& filePath)
+{
+    std::ifstream ifs(filePath, std::ios::binary);
+        if (!ifs.is_open())
+            throw FileNotLoaded("Couldn't open " + GetAbsolutePath(filePath) + ".");
+
+        ProjectSettings settings;       
+        ifs.read(reinterpret_cast<char*>(&settings), sizeof(ProjectSettings));
+        Project p;
+        p.setSettings(settings);
+        p.setFilePath(filePath);
+
+    ifs.close();
+    
+    return p;
+}
+
+Project ObjectLoader::LoadProject()
+{
+    std::string projectPath = FileExplorer::GetFileFromFileExplorer(s_ProjectExt);
+    if (projectPath.empty()) throw FileNotLoaded("Canceled by user.");
+
+    return LoadProject(projectPath);
+}
+
+void ObjectLoader::SaveProject(const Project& p)
+{
+    std::cout << "Saving project to \"" << p.getFilePath() << "\"." << std::endl;
+
+    std::ofstream ofs(p.getFilePath(), std::ios::binary |std::ofstream::trunc);
+        if (!ofs.is_open())
+            throw FileNotLoaded("Couldn't create " + GetAbsolutePath(p.getFilePath()) + ".");
+        
+        ProjectSettings settings = p.getSettings();
+        ofs.write(reinterpret_cast<const char*>(&settings), sizeof(ProjectSettings));
+
+    ofs.close();
+}
+
+void ObjectLoader::SaveProjectAs(Project& p)
+{
+    std::string path = FileExplorer::SaveFileFromFileExplorer();
+    if (path.empty()) throw FileNotLoaded("Canceled by user.");
+
+    bool needExt = true;
+    for(const auto& ext : s_ProjectExt)
+    {
+        if(path.ends_with(ext))
+        {
+            needExt = false;
+            break;
+        }
+    }
+
+    if (needExt)
+        path += ('.' + s_ProjectExt.front());
+
+    p.setFilePath(path);
+
+    SaveProject(p);
+}
+
 Mesh ObjectLoader::LoadMesh(const std::string& filePath)
 {
     if (filePath.ends_with(".obj"))
@@ -21,9 +86,9 @@ Mesh ObjectLoader::LoadMesh(const std::string& filePath)
 
 Mesh ObjectLoader::LoadMesh()
 {
-    std::string path = FileExplorer::GetFileFromFileExplorer();
+    std::string path = FileExplorer::GetFileFromFileExplorer(s_MeshesExts);
 
-    if (path.empty()) throw FileNotLoaded("Empty path.");
+    if (path.empty()) throw FileNotLoaded("Canceled by user.");
 
     return LoadMesh(path);
 }

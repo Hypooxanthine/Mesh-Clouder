@@ -67,9 +67,11 @@ set(PROJECT_IMPL
     ${SOURCE_DIR}/States/MainState.cpp
     ${SOURCE_DIR}/Data/Mesh.cpp
     ${SOURCE_DIR}/Data/PointCloud.cpp
+    ${SOURCE_DIR}/Data/Project.cpp
     ${SOURCE_DIR}/ExternalData/ObjectLoader.cpp
     ${SOURCE_DIR}/ExternalData/FileExplorer_Unix.cpp
     ${SOURCE_DIR}/ExternalData/FileExplorer_Windows.cpp
+    ${SOURCE_DIR}/ExternalData/FileExplorer.cpp
     ${SOURCE_DIR}/Rendering/Renderer.cpp
     ${SOURCE_DIR}/Rendering/Abstraction/IndexBuffer.cpp
     ${SOURCE_DIR}/Rendering/Abstraction/Shader.cpp
