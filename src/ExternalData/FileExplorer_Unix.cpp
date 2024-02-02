@@ -4,7 +4,7 @@
 
 #include "osdialog/osdialog.h"
 
-std::string FileExplorer::GetFileFromFileExplorer()
+std::string FileExplorer::GetFileFromFileExplorer(const std::vector<std::string>& ext)
 {
     char* filename = osdialog_file(OSDIALOG_OPEN, NULL, NULL, NULL);
     if (filename == nullptr)
