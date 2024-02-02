@@ -55,7 +55,7 @@ void ObjectEditor::render()
         m_Renderer.draw(*m_RenderMesh, m_Camera);
     if(m_ShouldRenderPointCloud)
         m_Renderer.draw(*m_RenderPointCloud, m_Camera);
-    if (m_ShouldRenderBrush)
+    if (false && m_ShouldRenderBrush) // Brush system not implemented yet
         m_Renderer.draw(*m_BrushMesh, m_Camera);
     m_Renderer.draw(*m_CoordinateSystem, m_Camera);
 
