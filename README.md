@@ -30,16 +30,7 @@ MeshClouder is a standalone program developed in C++ for Linux and Windows. It a
 
 ### glfw
 
-Since no package of glfw exists, you need to download glfw source code [here](https://github.com/glfw/glfw/releases/download/3.3.8/glfw-3.3.8.zip) and then compile it yourself. Open a terminal in extracted file root folder then type :
-
-```bash
-mkdir build
-cd build
-cmake ..
-make && sudo make install
-```
-
-This will install glfw binaries on your system
+`sudo apt install libglfw3-dev`
 
 ## Building and Running
 
